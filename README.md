@@ -8,29 +8,29 @@
 > cd LinkedOut
 
 ## ⚙️ Backend
-> **Navegando até a pasta backend**
+> **Navegando até a pasta `backend/`:**
 > ```bash
 > cd backend 
 >```
-> **Instalando as dependências**
+> **Instalando as dependências:**
 > ```bash
 > npm install
 >```
-> **Iniciando o Servidor**
+> **Iniciando o servidor:**
 > ```bash
 > npm start
 > ```
 
 ## 🌐 Frontend
-> **Navegando até a pasta frontend**
+> **Navegando até a pasta `frontend/`:**
 > ```bash
 > cd ../frontend 
 >```
-> **Instalando as dependências**
+> **Instalando as dependências:**
 > ```bash
 > npm install
 >```
-> **Iniciando o Servidor**
+> **Iniciando o servidor:**
 > ```bash
 > npm start
 > ```
