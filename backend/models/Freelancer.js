@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize');
 const database = require('../config/database');
 const Usuario = require('./Usuario');
-const Candidatura = require('./Candidatura');
-const Pagamento = require('./Pagamento');
 
 const Freelancer = database.define('freelancer', {
     idUsuario: {
@@ -61,9 +59,5 @@ const Freelancer = database.define('freelancer', {
 }, {
     timestamps: false,
 });
-
-Freelancer.belongsTo(Usuario, {foreignKey: 'idUsuario'});
-Freelancer.hasMany(Candidatura, {foreignKey: 'idFreelancer'});
-Freelancer.hasMany(Pagamento, {foreignKey: 'idFreelancer'});
 
 module.exports = Freelancer;

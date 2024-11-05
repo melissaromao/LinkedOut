@@ -43,7 +43,4 @@ const Pagamento = database.define('pagamento', {
     timestamps: false,
 });
 
-Pagamento.belongsTo(Freelancer, {foreignKey: 'idFreelancer'});
-Pagamento.belongsTo(Freela, {foreignKey: 'idFreela'});
-
 module.exports = Pagamento;

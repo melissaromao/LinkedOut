@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize');
 const database = require('../config/database');
-const Freelancer = require('./Freelancer');
-const Empresa = require('./Empresa');
 
 const Usuario = database.define('usuario', {
     idUsuario: {
@@ -25,8 +23,5 @@ const Usuario = database.define('usuario', {
 }, {
     timestamps: false,
 });
-
-Usuario.hasOne(Freelancer, {foreignKey: 'idUsuario'});
-Usuario.hasOne(Empresa, {foreignKey: 'idUsuario'});
 
 module.exports = Usuario;

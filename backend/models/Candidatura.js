@@ -49,7 +49,4 @@ const Candidatura = database.define('candidatura', {
     timestamps: false,
 });
 
-Candidatura.belongsTo(Freelancer, {foreignKey: 'idFreelancer'});
-Candidatura.belongsTo(Freela, {foreignKey: 'idFreela'});
-
 module.exports = Candidatura;
