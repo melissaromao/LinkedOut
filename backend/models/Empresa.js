@@ -33,7 +33,8 @@ const Empresa = database.define('empresa', {
     },
 
     sobreNos: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
     },
 
     idCategoria: {
