@@ -9,6 +9,10 @@ const Usuario = database.define('usuario', {
         primaryKey: true
     },
 
+    nome: {
+        type: Sequelize.STRING,
+    },
+
     email: {
         type: Sequelize.STRING,
         unique: true,
