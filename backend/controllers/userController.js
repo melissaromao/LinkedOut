@@ -29,17 +29,17 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-        const { idUsuario } = req;
+        const {idUsuario} = req;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({message: "Usuário não encontrado"});
+                return res.status(404).json({message: 'Usuário não encontrado'});
             }
 
             return res.status(200).json({
-                message: "Usuário encontrado",
+                message: 'Usuário encontrado',
                 usuario: {
                     id: usuario.id,
                     email: usuario.email
@@ -47,7 +47,33 @@ module.exports = {
             });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({message: "Erro ao buscar usuário"});
+            return res.status(500).json({message: 'Erro ao buscar usuário'});
+        }
+    },
+
+    editar: async (req, res) => {
+        const {idUsuario} = req;
+        const {email, senha} = req.body;
+
+        try {
+            const usuario = await Usuario.findByPk(idUsuario);
+            
+            if (!usuario) {
+                return res.status(404).json({message: 'Usuário não encontrado'});
+            }
+
+            usuario.email = email || usuario.email;
+
+            if(senha) {
+                usuario.senha = await bcrypt.hash(senha, 10);
+            }
+
+            await usuario.save();
+
+            return res.status(200).json({message: 'Usuário atualizado com sucesso', usuario});
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({message: 'Erro ao editar usuário'});
         }
     },
 };
