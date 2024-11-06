@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 require('./models/relacoes');
-const sequelize = require('./config/database');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
+const sequelize = require('./config/database');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
 
