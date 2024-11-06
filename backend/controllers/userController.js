@@ -29,7 +29,7 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-        const { idUsuario } = req;
+        const {idUsuario} = req.params;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
@@ -52,8 +52,8 @@ module.exports = {
     },
 
     editar: async (req, res) => {
-        const { idUsuario } = req;
-        const { email, senha } = req.body;
+        const {idUsuario} = req;
+        const {email, senha} = req.body;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
