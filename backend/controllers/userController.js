@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     cadastro: async (req, res) => {
-        const { email, senha } = req.body;
+        const { email, senha, nome } = req.body;
 
         try {
             const usuarioExistente = await Usuario.findOne({ where: { email } });
@@ -17,6 +17,7 @@ module.exports = {
             const novoUsuario = await Usuario.create({
                 email,
                 senha: senhaCriptografada,
+                nome
             });
 
             return res.status(201).json({
@@ -29,7 +30,7 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-        const {idUsuario} = req.params;
+        const { idUsuario } = req.params;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
@@ -42,7 +43,8 @@ module.exports = {
                 message: 'Usuário encontrado',
                 usuario: {
                     id: usuario.id,
-                    email: usuario.email
+                    email: usuario.email,
+                    nome: usuario.nome
                 }
             });
         } catch (error) {
@@ -52,8 +54,8 @@ module.exports = {
     },
 
     editar: async (req, res) => {
-        const {idUsuario} = req;
-        const {email, senha} = req.body;
+        const { idUsuario } = req;
+        const { email, senha, nome } = req.body;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
@@ -63,6 +65,7 @@ module.exports = {
             }
 
             usuario.email = email || usuario.email;
+            usuario.nome = nome || usuario.nome;
 
             if (senha) {
                 usuario.senha = await bcrypt.hash(senha, 10);
@@ -79,7 +82,6 @@ module.exports = {
 
     excluir: async (req, res) => {
         const { idUsuario } = req;
-        const { email, senha } = req.body;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
