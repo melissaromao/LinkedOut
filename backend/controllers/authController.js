@@ -4,13 +4,13 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     login: async (req, res) => {
-        const {email, senha} = req.body;
-    
+        const { email, senha } = req.body;
+
         try {
-            const usuario = await Usuario.findOne({where: {email}});
+            const usuario = await Usuario.findOne({ where: { email } });
 
             if (!usuario) {
-                return res.status(404).json({message: 'Usuário não encontrado'});
+                return res.status(404).json({ message: 'Usuário não encontrado' });
             }
 
             const senhaValida = await bcrypt.compare(senha, usuario.senha);
@@ -19,22 +19,23 @@ module.exports = {
             }
 
 
-            const token = jwt.sign (
-                {id: usuario.id, email: usuario.email},
+            const token = jwt.sign(
+                { id: usuario.id, email: usuario.email },
                 process.env.JWT_SECRET,
-                {expiresIn: '1h'}
+                { expiresIn: '1h' }
             );
 
-            return res.status(200).json ({
+            return res.status(200).json({
                 message: 'Login bem-sucedido!',
                 token,
                 usuario: {
-                    email: usuario.email
+                    email: usuario.email,
+                    nome: usuario.nome
                 }
             });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({message: 'Login mal-sucedido.'});
+            return res.status(500).json({ message: 'Login mal-sucedido.' });
         }
     }
 }
