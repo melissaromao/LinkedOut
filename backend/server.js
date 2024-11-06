@@ -1,9 +1,21 @@
 const express = require('express');
-const sequelize = require('./config/database');
+const cors = require('cors');
 require('./models/relacoes');
+const sequelize = require('./config/database');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = 3001;
+
+app.use(bodyParser.json());
+app.use(cors());
+
+const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
+
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 
 app.get('/', (req, res) => {
   res.send('Bem-vindo ao LinkedOut!');
