@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     cadastro: async (req, res) => {
@@ -24,6 +25,29 @@ module.exports = {
             });
         } catch (error) {
             return res.status(500).json({message: 'Erro ao cadastrar usuário :('});
+        }
+    },
+
+    getUserById: async (req, res) => {
+        const { idUsuario } = req;
+
+        try {
+            const usuario = await Usuario.findByPk(idUsuario);
+
+            if (!usuario) {
+                return res.status(404).json({message: "Usuário não encontrado"});
+            }
+
+            return res.status(200).json({
+                message: "Usuário encontrado",
+                usuario: {
+                    id: usuario.id,
+                    email: usuario.email
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({message: "Erro ao buscar usuário"});
         }
     },
 };
