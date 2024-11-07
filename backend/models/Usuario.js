@@ -13,6 +13,10 @@ const Usuario = database.define('usuario', {
         type: Sequelize.STRING,
     },
 
+    nome: {
+        type: Sequelize.STRING,
+    },
+
     email: {
         type: Sequelize.STRING,
         unique: true,
