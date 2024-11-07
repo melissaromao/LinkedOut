@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../js/homeFreelancers.js"></script>
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.css">
+    <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+    <title>Tela Principal</title>
+</head>
+<body class="body-tela-inicial">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid d-flex align-items-center">
+                <a href="perfilFreelancers.html" class="btn btn-secondary">
+                    <img src="../img/PerfilLinkedOut.png" alt="Foto de Perfil" class="profile-pic">
+                </a>
+            
+            <h1 class="h1center mx-auto">Seja bem-vindo ao Linked Out, Freela!</h1>
+            <div class="collapse navbar-collapse d-flex align-items-center" id="navbarSupportedContent">
+                <form class="d-flex mx-auto" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="dropdown ms-auto">
+                <button class="navbar-toggler dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="VagasNegociaçãoFreelancers.html">Vagas em Negociação</a></li>
+                    <li><a class="dropdown-item" href="VagasAndamentoFreelancers.html">Vagas em Andamento</a></li>
+                    <li><a class="dropdown-item" href="VagasReceberFreelancers.html">Vagas a Receber</a></li>
+                    <li><a class="dropdown-item" href="VagasFinalizadas.html">Vagas Finalizadas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="list-group-vagas">
+                    <div class="container d-flex justify-content-between align-items-center mt-4">
+                        <h3 class="h3subtitulo">Perfis Sugeridos</h3>
+                        <!-- Botão de Mais ao lado -->
+                        <a href="criarVaga.html" class="btn btn-primary">+ Criar Nova Vaga</a>
+                    </div>
+                    <div class="border-vagas">
+                        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Desenvolvedor Web Frontend</h5>
+                                <small class="text-body-secondary">2 dias atrás</small>
+                            </div>
+                            <p class="mb-1">Estamos procurando um desenvolvedor frontend experiente em React para trabalhar em nosso projeto de e-commerce.</p>
+                            <small>Remuneração: R$5.000/mês</small>
+                        </a>
+                    </div>
+                    <div class="border-vagas">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Redator de Conteúdo</h5>
+                                <small class="text-body-secondary">1 dia atrás</small>
+                            </div>
+                            <p class="mb-1">Precisamos de um redator para criar conteúdos para blogs e redes sociais focados em tecnologia e inovação.</p>
+                            <small class="text-body-secondary">Tipo: Freelancer por projeto</small>
+                        </a>
+                    </div>
+                    <div class="border-vagas">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Designer Gráfico</h5>
+                                <small class="text-body-secondary">5 dias atrás</small>
+                            </div>
+                            <p class="mb-1">Buscamos um designer gráfico criativo para desenvolver artes para campanhas publicitárias e materiais promocionais.</p>
+                            <small class="text-body-secondary">Prazo: 3 meses</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
