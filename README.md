@@ -20,17 +20,3 @@
 > ```bash
 > npm start
 > ```
-
-## 🌐 Frontend
-> **Navegando até a pasta `frontend/`:**
-> ```bash
-> cd ../frontend 
->```
-> **Instalando as dependências:**
-> ```bash
-> npm install
->```
-> **Iniciando o servidor:**
-> ```bash
-> npm start
-> ```
