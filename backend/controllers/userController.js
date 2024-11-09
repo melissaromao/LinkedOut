@@ -1,10 +1,15 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 module.exports = {
     cadastrar: async (req, res) => {
         const { email, senha, nome } = req.body;
 
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: 'Email inválido'});
+        }
+        
         try {
             const usuarioExistente = await Usuario.findOne({ where: { email } });
             if (usuarioExistente) {
