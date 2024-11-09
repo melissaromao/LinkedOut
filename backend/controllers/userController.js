@@ -1,9 +1,8 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 module.exports = {
-    cadastro: async (req, res) => {
+    cadastrar: async (req, res) => {
         const { email, senha, nome } = req.body;
 
         try {
@@ -14,23 +13,20 @@ module.exports = {
 
             const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-            const novoUsuario = await Usuario.create({
+            const usuario = await Usuario.create({
+                nome,
                 email,
-                senha: senhaCriptografada,
-                nome
+                senha: senhaCriptografada
             });
 
-            return res.status(201).json({
-                message: 'Sucesso ao cadastrar usuário :D',
-                usuario: { id: novoUsuario.id, nome: novoUsuario.nome, email: novoUsuario.email },
-            });
+            return res.status(201).json({ message: 'Sucesso ao cadastrar usuário', usuario });
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao cadastrar usuário :(' });
+            return res.status(500).json({ message: 'Erro ao cadastrar usuário' });
         }
     },
 
-    getUserById: async (req, res) => {
-        const { idUsuario } = req.params;
+    listar: async (req, res) => {
+        const { idUsuario } = req;
 
         try {
             const usuario = await Usuario.findByPk(idUsuario);
@@ -39,14 +35,7 @@ module.exports = {
                 return res.status(404).json({ message: 'Usuário não encontrado' });
             }
 
-            return res.status(200).json({
-                message: 'Usuário encontrado',
-                usuario: {
-                    id: usuario.id,
-                    email: usuario.email,
-                    nome: usuario.nome
-                }
-            });
+            return res.status(200).json({ message: 'Usuário encontrado', usuario });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Erro ao buscar usuário' });
