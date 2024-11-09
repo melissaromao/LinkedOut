@@ -18,24 +18,16 @@ module.exports = {
                 return res.status(400).json({ message: 'Senha incorreta' });
             }
 
-
             const token = jwt.sign(
-                { id: usuario.id, email: usuario.email },
+                { idUsuario: usuario.idUsuario },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
 
-            return res.status(200).json({
-                message: 'Login bem-sucedido!',
-                token,
-                usuario: {
-                    email: usuario.email,
-                    nome: usuario.nome
-                }
-            });
+            return res.status(200).json({ message: 'Login bem-sucedido!', nome: usuario.nome, token });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Login mal-sucedido.' });
+            return res.status(500).json({ message: 'Login mal-sucedido' });
         }
     }
 }
