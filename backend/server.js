@@ -3,11 +3,9 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const sequelize = require('./config/database');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-
-
+const cookieParser = require('cookie-parser');
+const path = require('path');
 require('./models/relacoes');
-
 const app = express();
 const port = 8080;
 
