@@ -7,13 +7,13 @@ module.exports = {
         const { email, senha, nome } = req.body;
 
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ message: 'Email inválido'});
+            return res.render('cadastro', { warning: 'Email inválido' });
         }
-        
+
         try {
             const usuarioExistente = await Usuario.findOne({ where: { email } });
             if (usuarioExistente) {
-                return res.status(400).json({ message: 'Email já cadastrado' });
+                return res.render('cadastro', { warning: 'Email já cadastrado' });
             }
 
             const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -24,9 +24,9 @@ module.exports = {
                 senha: senhaCriptografada
             });
 
-            return res.status(201).json({ message: 'Sucesso ao cadastrar usuário', usuario });
+            return res.render('index', { success: 'Sucesso ao cadastrar usuário'});
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao cadastrar usuário' });
+            return res.render('cadastro', { error: 'Erro ao cadastrar usuário' });
         }
     },
 
