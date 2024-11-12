@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('./models/relacoes');
+require('./models/Categoria');
 require('dotenv').config();
 
 const sequelize = require('./config/database');
@@ -13,9 +14,11 @@ app.use(cors());
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
+const categoriaRoute = require('./routes/categoriaRoute');
 
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/categoria', categoriaRoute);
 
 app.get('/', (req, res) => {
   res.send('Bem-vindo ao LinkedOut!');
