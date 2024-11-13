@@ -24,7 +24,7 @@ module.exports = {
                 senha: senhaCriptografada
             });
 
-            return res.render('index', { success: 'Sucesso ao cadastrar usuário'});
+            return res.render('index', { success: 'Sucesso ao cadastrar usuário' });
         } catch (error) {
             return res.render('cadastro', { error: 'Erro ao cadastrar usuário' });
         }
@@ -37,13 +37,13 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('home', { warning: 'Usuário não encontrado' });
             }
 
-            return res.status(200).json({ message: 'Usuário encontrado', usuario });
+            return res.render('home', { success: 'Usuário encontrado', usuario });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao buscar usuário' });
+            return res.render('home', { error: 'Erro ao buscar usuário' });
         }
     },
 
@@ -55,7 +55,7 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('index', { warning: 'Usuário não encontrado' });
             }
 
             usuario.email = email || usuario.email;
@@ -67,10 +67,10 @@ module.exports = {
 
             await usuario.save();
 
-            return res.status(200).json({ message: 'Usuário atualizado com sucesso', usuario });
+            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao editar usuário' });
+            return res.render('home', { error: 'Erro ao editar usuário' });
         }
     },
 
@@ -81,15 +81,15 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('home', { warning: 'Usuário não encontrado' });
             }
 
             await usuario.destroy();
 
-            return res.status(200).json({ message: 'Usuário excluído com sucesso' });
+            return res.render('index', { success: 'Usuário excluído com sucesso' });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Erro ao excluir usuário' });
+            return res.render('home', { error: 'Erro ao excluir usuário' });
         }
     }
 };
