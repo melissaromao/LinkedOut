@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-        return res.render('index', {warning: 'Token não fornecido'});
+        return res.render('index', { warning: 'Token não fornecido' });
     }
 
     try {
@@ -12,6 +12,6 @@ module.exports = (req, res, next) => {
         req.idUsuario = decoded.idUsuario;
         next();
     } catch (error) {
-        return res.render('index', {error: 'Token inválido'});
+        return res.render('index', { error: 'Token inválido' });
     }
 };
