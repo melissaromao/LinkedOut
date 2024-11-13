@@ -6,6 +6,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/cadastro', userController.cadastrar);
 router.post('/perfil', authMiddleware, userController.listar);
 router.post('/editar', authMiddleware, userController.editar);
-router.delete('/excluir', authMiddleware, userController.excluir);
+router.post('/excluir', authMiddleware, userController.excluir);
 
 module.exports = router;
