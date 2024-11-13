@@ -51,6 +51,10 @@ module.exports = {
         const { idUsuario } = req;
         const { email, senha, nome } = req.body;
 
+        if (!validator.isEmail(email)) {
+            return res.render('home', { warning: 'Email inválido', usuario });
+        }
+
         try {
             const usuario = await Usuario.findByPk(idUsuario);
 
@@ -58,6 +62,11 @@ module.exports = {
                 return res.render('index', { warning: 'Usuário não encontrado' });
             }
 
+            const usuarioExistente = await Usuario.findOne({ where: { email } });
+            if (usuarioExistente && usuarioExistente.idUsuario !== idUsuario) {
+                return res.render('home', { warning: 'Email já cadastrado', usuario });
+            }
+    
             usuario.email = email || usuario.email;
             usuario.nome = nome || usuario.nome;
 
