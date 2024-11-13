@@ -95,6 +95,7 @@ module.exports = {
 
             await usuario.destroy();
 
+            res.clearCookie('token');
             return res.render('index', { success: 'Usuário excluído com sucesso' });
         } catch (error) {
             console.log(error);
