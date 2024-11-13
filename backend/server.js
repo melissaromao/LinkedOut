@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const sequelize = require('./config/database');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const app = express();
 const port = 8080;
@@ -12,6 +13,7 @@ const port = 8080;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cors());
