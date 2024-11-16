@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <img src="/assets/img/LogoLinkedOut.jpeg" class="img-fluid" alt="Logo Linked Out">
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="form-freela p-4 rounded">
+                    <% if (typeof warning !=='undefined' && warning) { %>
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <%= warning %>
+                        </div>
+                        <% } %>
+
+                            <% if (typeof error !=='undefined' && error) { %>
+                                <div class="alert alert-danger mt-3" role="alert">
+                                    <%= error %>
+                                </div>
+                                <% } %>
+
+                                    <% if (typeof success !=='undefined' && success) { %>
+                                        <div class="alert alert-success mt-3" role="alert">
+                                            <%= success %>
+                                        </div>
+                                        <% } %>
+                                            <form action="/api/auth/login" method="post" id="sign-up-freela"
+                                                class="mb-5">
+                                                <h2 class="text-dark text-center mb-4">Login</h2>
+
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input type="email" id="email" name="email"
+                                                        placeholder="meuemail@email.com" class="form-control" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="senha" class="form-label">Senha</label>
+                                                    <input type="password" id="senha" name="senha" placeholder="******"
+                                                        class="form-control" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <input class="btn btn-success w-100" type="submit" value="Entrar"
+                                                        id="login">
+                                                </div>
+                                                <div class="text-center">
+                                                    <span class="small">Ainda não tem uma conta? <a href="/cadastro"
+                                                            id="lnk-sup"
+                                                            lass="text-decoration-none">Cadastre-se</a></span>
+                                                </div>
+                                            </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
