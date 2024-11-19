@@ -25,7 +25,7 @@ module.exports = {
             );
 
             res.cookie('token', token, { httpOnly: true });
-            return res.render('home', { usuario });
+            return res.redirect('/home');
         } catch (error) {
             console.log(error);
             return res.render('index', { error: 'Erro no Login' });
@@ -35,7 +35,7 @@ module.exports = {
     logout: async (req, res) => {
         try {
             res.clearCookie('token');
-            return res.render('index');
+            return res.redirect('/');
 
         } catch (error) {
             return res.render('home', { error: 'Erro ao sair' });
