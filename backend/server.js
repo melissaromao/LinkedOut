@@ -20,7 +20,12 @@ app.use(cors());
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
+const empresaRoute = require('./routes/empresaRoute');
+const authMiddleware = require('./middlewares/authMiddleware');
+const empresaController = require('./controllers/empresaController');
+const userController = require('./controllers/userController');
 
+app.use('/api/empresa', empresaRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -29,12 +34,16 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/empresa/:idEmpresa', authMiddleware, empresaController.listar);
+
 app.get('/cadastro', (req, res) => {
   res.render('cadastro');
 });
 
-app.get('/home', (req, res) => {
-  res.render('home');
+app.get('/home', authMiddleware, userController.listar);
+
+app.get('/empresa', (req, res) => {
+  res.render('empresa');
 });
 
 sequelize.authenticate()
