@@ -21,23 +21,17 @@ app.use(cors());
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
-<<<<<<< HEAD
 const categoriaRoute = require('./routes/categoriaRoute');
-=======
 const empresaRoute = require('./routes/empresaRoute');
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
 const userController = require('./controllers/userController');
->>>>>>> efc6bc0542972a09cd545924f7f1bf3e393ab5f6
 
 app.use('/api/empresa', empresaRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
-<<<<<<< HEAD
 app.use('/api/categoria', categoriaRoute);
-=======
 app.use(express.static(path.join(__dirname, '../frontend')));
->>>>>>> efc6bc0542972a09cd545924f7f1bf3e393ab5f6
 
 app.get('/', (req, res) => {
   res.render('index');
