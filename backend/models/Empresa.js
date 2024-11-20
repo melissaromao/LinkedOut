@@ -45,11 +45,11 @@ const Empresa = database.define('empresa', {
     },
 
     latitude: {
-        type: Sequelize.FLOAT
+        type: Sequelize.DOUBLE
     },
 
     longitude: {
-        type: Sequelize.FLOAT
+        type: Sequelize.DOUBLE
     }
     
 }, {

@@ -10,12 +10,12 @@ module.exports = {
             const usuario = await Usuario.findOne({ where: { email } });
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('index', { warning: 'Usuário não encontrado' });
             }
 
             const senhaValida = await bcrypt.compare(senha, usuario.senha);
             if (!senhaValida) {
-                return res.status(400).json({ message: 'Senha incorreta' });
+                return res.render('index', { warning: 'Senha incorreta' });
             }
 
             const token = jwt.sign(
@@ -24,10 +24,21 @@ module.exports = {
                 { expiresIn: '1h' }
             );
 
-            return res.status(200).json({ message: 'Login bem-sucedido!', nome: usuario.nome, token });
+            res.cookie('token', token, { httpOnly: true });
+            return res.redirect('/home');
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Login mal-sucedido' });
+            return res.render('index', { error: 'Erro no Login' });
+        }
+    },
+
+    logout: async (req, res) => {
+        try {
+            res.clearCookie('token');
+            return res.redirect('/');
+
+        } catch (error) {
+            return res.render('home', { error: 'Erro ao sair' });
         }
     }
 }
