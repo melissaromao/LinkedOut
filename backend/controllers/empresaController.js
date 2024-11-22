@@ -65,18 +65,19 @@ module.exports = {
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa, cnpj, nome, sobreNos, idCategoria, latitude, longitude } = req.body;
+        const empresas = await Empresa.findAll({ where: { idUsuario } });
     
         try {
             const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario } });
     
             if (!empresa) {
-                return res.render('home', { warning: 'Empresa não encontrada' });
+                return res.render('home', { warning: 'Empresa não encontrada', usuario, empresas, layout: 'layout'});
             }
     
             if (cnpj) {
                 const empresaExistente = await Empresa.findOne({ where: { cnpj } });
                 if (empresaExistente && empresaExistente.idEmpresa !== empresa.idEmpresa) {
-                    return res.render('home', { warning: 'CNPJ já cadastrado' });
+                    return res.render('home', { warning: 'CNPJ já cadastrado', layout: 'layout'});
                 }
                 empresa.cnpj = cnpj;
             }
@@ -89,18 +90,17 @@ module.exports = {
     
             await empresa.save();
     
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
-            return res.render('home', { success: 'Empresa editada com sucesso', usuario: req.usuario, empresas });
+            return res.render('home', { success: 'Empresa editada com sucesso', usuario: req.usuario, empresas, layout: 'layout' });
     
         } catch (error) {
             console.error('Erro ao editar empresa:', error);
     
             try {
                 const usuario = await Usuario.findByPk(idUsuario);
-                return res.render('home', { error: 'Erro ao editar empresa', usuario });
+                return res.render('home', { error: 'Erro ao editar empresa', usuario, empresas, layout: 'layout' });
             } catch (usuarioError) {
                 console.error('Erro ao carregar usuário:', usuarioError);
-                return res.render('home', { error: 'Erro ao carregar usuário' });
+                return res.render('home', { error: 'Erro ao carregar usuário', usuario, empresas, layout: 'layout'});
             }
         }
     },
