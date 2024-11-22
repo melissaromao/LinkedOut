@@ -1,53 +1,76 @@
 const Usuario = require('../models/Usuario');
-const Freela = require('../models/Freela');
 const Empresa = require('../models/Empresa');
+const Freela = require('../models/Freela');
 
 module.exports = {
     cadastrar: async (req, res) => {
-        const { idUsuario } = req;
-        const { idEmpresa, nome, descricao, idCategoria, valor, dataValidade } = req.body;
+        const { idEmpresa } = req.params;
+        const { nome, descricao, valor, dataValidade } = req.body;
 
         try {
-            const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario }});
+            const empresa = await Empresa.findOne({ where: { idEmpresa } });
+
             if (!empresa) {
-                return res.render('empresaHome', { error: 'Empresa não encontrada' });
+                return res.render('home', { warning: 'Empresa não encontrada' });
             }
 
             const freela = await Freela.create({
-                idEmpresa,
                 nome,
                 descricao,
-                idCategoria,
                 valor,
-                dataValidade
+                idEmpresa,
+                dataValidade,
+                statusFreela: 'ABERTO',
             });
 
             const freelas = await Freela.findAll({ where: { idEmpresa } });
-            return res.render('empresaHome', { success: 'Sucesso ao cadastrar freela', empresa, usuario, freelas });
+            return res.render('empresaHome', { success: 'Freela cadastrado com sucesso!', freelas, empresa });
         } catch (error) {
-            console.log(error);
-            return res.render('empresaHome', { error: 'Erro ao cadastrar freela' });
+            console.error('Erro ao cadastrar freela:', error);
+            return res.render('home', { error: 'Erro ao cadastrar freela' });
         }
     },
 
     listarFreelas: async (req, res) => {
         try {
+            const limit = 10;
+    
+            const page = parseInt(req.query.page) || 1;
+    
+            const offset = (page - 1) * limit;
+    
             const freelas = await Freela.findAll({
                 include: [
                     {
                         model: Empresa,
                         attributes: ['nome']
                     }
-                ]
+                ],
+                limit: limit,
+                offset: offset
             });
-
-            return res.render('freelas', { freelas });
+    
+            const totalFreelas = await Freela.count();
+    
+            const totalPages = Math.ceil(totalFreelas / limit);
+    
+            if (!freelas || freelas.length === 0) {
+                return res.render('freelas', { warning: 'Nenhum freela encontrado' });
+            }
+    
+            return res.render('freelas', {
+                freelas,
+                currentPage: page,
+                totalPages: totalPages,
+                totalFreelas: totalFreelas,
+                warning: freelas.length === 0 ? 'Nenhum freela encontrado' : undefined
+            });
         } catch (error) {
             console.log(error);
             return res.render('home', { error: 'Erro ao listar freelas' });
         }
     },
-
+    
     listarFreela: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa } = req.params;
@@ -56,7 +79,7 @@ module.exports = {
             const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario } });
 
             if (!empresa) {
-                return res.render('home', { warning: 'Empresa não encontrada' });
+                return res.render('home', { warning: 'Empresa não encontrada ou você não tem permissão para acessá-la' });
             }
 
             const freelas = await Freela.findAll({ where: { idEmpresa } });
@@ -69,7 +92,7 @@ module.exports = {
 
     editar: async (req, res) => {
         const { idUsuario } = req;
-        const { idFreela, nome, descricao, idCategoria, valor, dataValidade, statusFreela } = req.body;
+        const { idFreela, nome, descricao, valor, dataValidade, statusFreela } = req.body;
 
         try {
             const freela = await Freela.findByPk(idFreela);
@@ -81,19 +104,20 @@ module.exports = {
             const empresa = await Empresa.findOne({ where: { idEmpresa: freela.idEmpresa, idUsuario } });
 
             if (!empresa) {
-                return res.render('home', { warning: 'Empresa do freela não pertence a você' });
+                return res.render('home', { warning: 'Você não tem permissão para editar este freela' });
             }
 
             freela.nome = nome || freela.nome;
             freela.descricao = descricao || freela.descricao;
-            freela.idCategoria = idCategoria || freela.idCategoria;
             freela.valor = valor || freela.valor;
             freela.dataValidade = dataValidade || freela.dataValidade;
             freela.statusFreela = statusFreela || freela.statusFreela;
 
             await freela.save();
+
+            const freelas = await Freela.findAll({ where: { idEmpresa: empresa.idEmpresa } });
             return res.render('empresaHome', { success: 'Freela editado com sucesso', empresa, freelas });
-        } catch {
+        } catch (error) {
             console.log(error);
             return res.render('home', { error: 'Erro ao editar freela' });
         }
@@ -113,12 +137,13 @@ module.exports = {
             const empresa = await Empresa.findOne({ where: { idEmpresa: freela.idEmpresa, idUsuario } });
 
             if (!empresa) {
-                return res.render('home', { warning: 'Empresa do freela não pertence a você' });
+                return res.render('home', { warning: 'Você não tem permissão para excluir este freela' });
             }
 
             await freela.destroy();
 
-            return res.render('empresaHome', { success: 'Freela excluído com sucesso' });
+            const freelas = await Freela.findAll({ where: { idEmpresa: empresa.idEmpresa } });
+            return res.render('empresaHome', { success: 'Freela excluído com sucesso', empresa, freelas });
         } catch (error) {
             console.log(error);
             return res.render('home', { error: 'Erro ao excluir freela' });
