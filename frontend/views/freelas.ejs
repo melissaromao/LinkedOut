@@ -9,23 +9,18 @@
 </head>
 
 <body class="body-tela-inicial">
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid d-flex align-items-center">
-            <a href="perfilFreelancers.html">
-                <img src="/assets/img/PerfilLinkedOut.png" alt="Foto de Perfil" class="profile-pic">
-            </a>
-
-            <h1 class="h1center mx-auto">Seja bem-vindo ao Linked Out, Freelancer!</h1>
-            <div class="collapse navbar-collapse d-flex align-items-center" id="navbarSupportedContent">
-                <form class="d-flex mx-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-            <div class="dropdown ms-auto">
-                <button class="navbar-toggler dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <span class="navbar-toggler-icon"></span>
+    <div class="container-fluid py-3">
+        <h2 class="text-center mb-4">Vagas Sugeridas</h2>
+    
+        <div class="d-flex justify-content-center align-items-center">
+            <form class="d-flex me-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+                <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+            </form>
+    
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtro
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="VagasNegociaçãoFreelancers.html">Vagas em Negociação</a></li>
@@ -35,53 +30,59 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </div>    
 
-    <h3 class="h3subtitulo">Vagas Sugeridas</h3>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
                 <div class="list-group-vagas">
-                    <% if (freelas && freelas.length> 0) { %>
-                        <% freelas.forEach(freela=> { %>
-                            <div class="border-vagas">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">
-                                            <%= freela.titulo %>
-                                        </h5>
-                                    </div>
+                    <% if (freelas.length> 0) { %>
+                        <div class="list-group">
+                            <% freelas.forEach(function(freela) { %>
+                                <div class="list-group-item border-vagas">
+                                    <h5 class="mb-1">
+                                        <%= freela.titulo %>
+                                    </h5>
                                     <p class="mb-1">
+                                        <strong>Descrição:</strong>
                                         <%= freela.descricao %>
                                     </p>
-                                    <small class="text-body-secondary">Remuneração: <%= freela.remuneracao %></small>
-                                    <br>
-                                    <small class="text-body-secondary">Status: <%= freela.statusFreela %></small>
-                                    <br>
-                                    <small class="text-body-secondary">Data de Criação: <%= freela.dataCriacao %>
-                                            </small>
-                                    <br>
-                                    <small class="text-body-secondary">Data de Validade: <%= freela.dataValidade %>
-                                            </small>
-                                    <br>
-                                    <small class="text-body-secondary">Categoria: <%= freela.idCategoria %></small>
-                                </a>
-                            </div>
-                            <% }); %>
-                                <% } else { %>
-                                    <p class="text-center">Nenhuma vaga disponível no momento.</p>
-                                    <% } %>
+                                    <p class="mb-1">
+                                        <strong>Remuneração:</strong> R$ <%= freela.remuneracao %>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Status:</strong>
+                                        <%= freela.statusFreela %>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Data de Criação:</strong>
+                                        <%= new Date(freela.dataCriacao).toLocaleDateString() %>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Data de Validade:</strong>
+                                        <%= new Date(freela.dataValidade).toLocaleDateString() %>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Categoria:</strong>
+                                        <%= freela.idCategoria %>
+                                    </p>
+                                </div><br>
+                                <% }); %>
+                        </div>
+                        <% } else { %>
+                            <p class="text-center">Nenhum freela encontrado.</p>
+                            <% } %>
 
-                                        <div class="pagination">
-                                            <% if (currentPage> 1) { %>
-                                                <a href="?page=<%= currentPage - 1 %>" class="btn btn-primary">Página
-                                                    Anterior</a>
+                                <div class="pagination">
+                                    <% if (currentPage> 1) { %>
+                                        <a href="?page=<%= currentPage - 1 %>" class="btn btn-primary">Página
+                                            Anterior</a>
+                                        <% } %>
+                                            <% if (currentPage < totalPages) { %>
+                                                <a href="?page=<%= currentPage + 1 %>" class="btn btn-primary">Próxima
+                                                    Página</a>
                                                 <% } %>
-                                                    <% if (currentPage < totalPages) { %>
-                                                        <a href="?page=<%= currentPage + 1 %>"
-                                                            class="btn btn-primary">Próxima Página</a>
-                                                        <% } %>
-                                        </div>
+                                </div>
                 </div>
             </div>
         </div>
