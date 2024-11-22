@@ -1,18 +1,34 @@
 const express = require('express');
-const sequelize = require('./config/database');  // Conexão com o banco de dados
-const categoriaRoutes = require('./routes/categoriaRoutes');  // Importando as rotas de categoria
-require('./models/relacoes');  // Carregar as relações (associações do Sequelize)
+const sequelize = require('./config/database');
+require('./models/relacoes');
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
-// Middleware para analisar o corpo da requisição como JSON
-app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../frontend/views'));
 
-// Usando as rotas de categoria
-app.use('/api', categoriaRoutes);
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
+app.use(cors());
 
-// Teste de conexão com o banco de dados e inicialização do servidor
+const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
+const empresaRoute = require('./routes/empresaRoute');
+const authMiddleware = require('./middlewares/authMiddleware');
+const empresaController = require('./controllers/empresaController');
+const userController = require('./controllers/userController');
+
+app.use('/api/empresa', empresaRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+app.get('/', (req, res) => {
+  res.send('Bem-vindo ao LinkedOut!');
+});
+
 sequelize.authenticate()
   .then(() => {
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
