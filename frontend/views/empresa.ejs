@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Empresa</title>
+    <title>Cadastro de Empresa</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 </head>
 
@@ -33,13 +33,10 @@
                                             <%= success %>
                                         </div>
                                         <% } %>
-
-                                            <% if (typeof usuario !=='undefined' && usuario) { %>
-                                                <p>Cadastre sua Empresa, <%= usuario.nome %>!</p>
-                                                <% } %>
                                                     <form method="POST" action="/api/empresa/cadastrar">
+                                                        <h2 class="text-dark text-center mb-4">Cadastro de Empresa</h2>
                                                         <div class="mb-3">
-                                                            <label for="nome" class="form-label">Nome da Empresa</label>
+                                                            <label for="nome" class="form-label">Nome</label>
                                                             <input type="text" class="form-control" id="nome"
                                                                 name="nome" placeholder="Minha Empresa" required>
                                                         </div>
@@ -51,10 +48,9 @@
                                                         </div>
 
                                                         <div class="mb-3">
-                                                            <label for="sobreNos" class="form-label">Sobre a
-                                                                Empresa</label>
+                                                            <label for="sobreNos" class="form-label">Sobre Nós</label>
                                                             <textarea class="form-control" id="sobreNos" name="sobreNos"
-                                                                rows="3" required></textarea>
+                                                                rows="3" style="resize: none;" required></textarea>
                                                         </div>
 
                                                         <div class="mb-3">
