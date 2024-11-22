@@ -17,9 +17,27 @@
 
             <h1 class="h1center mx-auto">Seja bem-vindo ao Linked Out, Freelancer!</h1>
             <div class="collapse navbar-collapse d-flex align-items-center" id="navbarSupportedContent">
+                <!-- Formulário com busca e filtro -->
                 <form class="d-flex mx-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <!-- Campo de busca -->
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar vagas..." aria-label="Search">
+
+                    <!-- Ícone de filtro com dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filtro
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="filterButton">
+                            <li><button class="dropdown-item" data-category="tecnologia">Tecnologia</button></li>
+                            <li><button class="dropdown-item" data-category="beleza">Beleza e Estética</button></li>
+                            <li><button class="dropdown-item" data-category="design">Design</button></li>
+                            <li><button class="dropdown-item" data-category="marketing">Marketing</button></li>
+                            <!-- Adicione mais categorias conforme necessário -->
+                        </ul>
+                    </div>
+
+                    <!-- Botão de pesquisa -->
+                    <button class="btn btn-outline-success" type="button" id="searchButton">Pesquisar</button>
                 </form>
             </div>
             <div class="dropdown ms-auto">
@@ -80,6 +98,7 @@
         </div>
     </div>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/filtro.js"></script>
 </body>
 
 </html>
