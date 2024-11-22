@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario');
 const Empresa = require('../models/Empresa');
+const Freela = require('../models/Freela');
 
 module.exports = {
     cadastrar: async (req, res) => {
@@ -40,19 +41,24 @@ module.exports = {
         const { idUsuario } = req;
         const { idEmpresa } = req.params;
         console.log('ID DA EMPRESA', idEmpresa);
-
+    
         try {
             const usuario = await Usuario.findOne({ where: { idUsuario } });
             const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario } });
-
+    
             if (!empresa) {
                 return res.render('home', { warning: 'Empresa não encontrada', usuario });
             }
-
-            return res.render('empresaHome', { success: 'Empresa encontrada', empresa, usuario });
+    
+            const freelas = await Freela.findAll({ where: { idEmpresa } });
+    
+            return res.render('empresaHome', { success: 'Empresa encontrada', empresa, usuario, freelas: freelas || [] });
         } catch (error) {
+            const usuario = await Usuario.findOne({ where: { idUsuario } });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
+    
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar empresa', usuario });
+            return res.render('home', { error: 'Erro ao buscar empresa', usuario, empresas });
         }
     },
 
