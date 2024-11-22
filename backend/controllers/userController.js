@@ -1,19 +1,20 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const Empresa = require('../models/Empresa');
 
 module.exports = {
     cadastrar: async (req, res) => {
         const { email, senha, nome } = req.body;
 
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ message: 'Email inválido'});
+            return res.render('cadastro', { warning: 'Email inválido' });
         }
-        
+
         try {
             const usuarioExistente = await Usuario.findOne({ where: { email } });
             if (usuarioExistente) {
-                return res.status(400).json({ message: 'Email já cadastrado' });
+                return res.render('cadastro', { warning: 'Email já cadastrado' });
             }
 
             const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -24,9 +25,9 @@ module.exports = {
                 senha: senhaCriptografada
             });
 
-            return res.status(201).json({ message: 'Sucesso ao cadastrar usuário', usuario });
+            return res.render('index', { success: 'Sucesso ao cadastrar usuário' });
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao cadastrar usuário' });
+            return res.render('cadastro', { error: 'Erro ao cadastrar usuário' });
         }
     },
 
@@ -37,13 +38,15 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('home', { warning: 'Usuário não encontrado' });
             }
 
-            return res.status(200).json({ message: 'Usuário encontrado', usuario });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
+
+            return res.render('home', { usuario, empresas });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao buscar usuário' });
+            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [] });
         }
     },
 
@@ -51,11 +54,20 @@ module.exports = {
         const { idUsuario } = req;
         const { email, senha, nome } = req.body;
 
+        if (!validator.isEmail(email)) {
+            return res.render('home', { warning: 'Email inválido', usuario });
+        }
+
         try {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('index', { warning: 'Usuário não encontrado' });
+            }
+
+            const usuarioExistente = await Usuario.findOne({ where: { email } });
+            if (usuarioExistente && usuarioExistente.idUsuario !== idUsuario) {
+                return res.render('home', { warning: 'Email já cadastrado', usuario });
             }
 
             usuario.email = email || usuario.email;
@@ -67,10 +79,10 @@ module.exports = {
 
             await usuario.save();
 
-            return res.status(200).json({ message: 'Usuário atualizado com sucesso', usuario });
+            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao editar usuário' });
+            return res.render('home', { error: 'Erro ao editar usuário' });
         }
     },
 
@@ -81,15 +93,16 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.status(404).json({ message: 'Usuário não encontrado' });
+                return res.render('home', { warning: 'Usuário não encontrado' });
             }
 
             await usuario.destroy();
 
-            return res.status(200).json({ message: 'Usuário excluído com sucesso' });
+            res.clearCookie('token');
+            return res.render('index', { success: 'Usuário excluído com sucesso' });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Erro ao excluir usuário' });
+            return res.render('home', { error: 'Erro ao excluir usuário' });
         }
     }
 };
