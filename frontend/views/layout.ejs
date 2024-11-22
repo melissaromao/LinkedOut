@@ -11,19 +11,30 @@
 <body class="body-tela-inicial">
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container-fluid">
-            <h1 class="h1center mx-auto">Olá, <%= usuario.nome %>!</h1>
+            <a class="navbar-brand" href="#">
+                <img src="/assets/img/LogoLinkedOut.jpeg" alt="" width="30" height="24" class="d-inline-block align-text-top"></a>          
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <h3 class="h1center mx-auto">Olá, <%= usuario.nome %>!</h3>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/freelas">Freelas</a>
+                    </li>
                     <% if (typeof usuario !=='undefined' && usuario) { %>
                         <li class="nav-item">
                             <a class="nav-link" href="/home">Minha Conta</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/logout">Sair</a>
+                            <a class="nav-link text-danger" href="/api/auth/logout">Sair</a>
                         </li>
                         <% } else { %>
                             <li class="nav-item">
-                                <a class="nav-link" href="/login">Entrar</a>
+                                <a class="nav-link" href="/">Entrar</a>
                             </li>
                             <% } %>
                 </ul>
