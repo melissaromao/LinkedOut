@@ -77,8 +77,8 @@ module.exports = {
       return res.status(400).json({ error: 'Erro ao excluir categoria.' });
     }
       return res.status(200).json({ message: 'Categoria excluída com sucesso.' });
-    } catch (error) {
+    } ,catch (error) {
       return res.status(400).json({ error: 'Erro ao excluir categoria.' });
     }
   }
-};
+
