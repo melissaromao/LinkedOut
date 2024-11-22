@@ -34,6 +34,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(ejsLayouts);
+app.set('layout', 'layout');
 
 app.get('/', (req, res) => {
   res.render('index', { layout: false });
@@ -53,7 +54,7 @@ app.get('/empresa', (req, res) => {
 
 app.get('/empresa/:idEmpresa/freela', (req, res) => {
   const idEmpresa = req.params.idEmpresa;
-  res.render('freela', { idEmpresa: idEmpresa });
+  res.render('freela', { idEmpresa: idEmpresa, layout: false });
 });
 
 app.get('/freelas', authMiddleware, freelaController.listarFreelas);
