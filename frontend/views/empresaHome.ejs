@@ -5,14 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <title>Gerenciar Empresa>
-    </title>
+    <title>Gerenciar Empresa</title>
 </head>
 
 <body>
     <div class="container-fluid vh-100">
-        <h2 class="text-center">Gerenciar <%= empresa.nome %>
-        </h2>
+        <h2 class="text-center">Gerenciar <%= empresa.nome %></h2>
 
         <% if (typeof warning !=='undefined' && warning) { %>
             <div class="alert alert-warning mt-3" role="alert">
@@ -112,7 +110,7 @@
                                             <p><strong>Status:</strong>
                                                 <%= freela.statusFreela %>
                                             </p>
-                                        </div>
+                                        </div><br>
                                         <% }); %>
                                 </div>
                                 <% } else { %>
