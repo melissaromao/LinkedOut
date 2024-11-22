@@ -1,5 +1,11 @@
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const sequelize = require('./config/database');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+
 require('./models/relacoes');
 
 const app = express();
@@ -8,6 +14,10 @@ const port = 8080;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
@@ -15,14 +25,19 @@ app.use(cors());
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
+const categoriaRoute = require('./routes/categoriaRoute');
+
 const empresaRoute = require('./routes/empresaRoute');
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
 const userController = require('./controllers/userController');
 
+
 app.use('/api/empresa', empresaRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/categoria', categoriaRoute);
+
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.get('/', (req, res) => {
