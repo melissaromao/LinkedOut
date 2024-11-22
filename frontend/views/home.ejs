@@ -13,7 +13,7 @@
         <h2 class="text-center">Minha Conta</h2>
 
         <% if (typeof warning !=='undefined' && warning) { %>
-            div class="alert alert-warning mt-3" role="alert">
+            <div class="alert alert-warning mt-3" role="alert">
                 <%= warning %>
             </div>
             <% } %>
@@ -32,12 +32,13 @@
 
                                 <form method="POST" action="/api/user/editar">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="nome" value="<%= usuario.nome %>">
+                                        <input type="text" class="form-control" name="nome"
+                                            value="<%= usuario ? usuario.nome : '' %>">
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <input type="email" class="form-control" name="email"
-                                            value="<%= usuario.email %>">
+                                            value="<%= usuario && usuario.email ? usuario.email : '' %>">
                                     </div>
 
                                     <button type="submit" class="btn btn-success">Salvar</button>
@@ -72,23 +73,28 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <h3 class="mt-4">Minhas Empresas</h3>
                                 <% if (typeof empresas !=='undefined' && empresas && empresas.length> 0) { %>
                                     <ul class="list-group">
                                         <% empresas.forEach(empresa=> { %>
-                                            <li>
-                                                <a href="/empresa/<%= empresa.idEmpresa %>">
+                                            <li class="list-group-item">
+                                                <a class="text-decoration-none"
+                                                    href="/empresa/<%= empresa.idEmpresa %>">
                                                     <%= empresa.nome %>
                                                 </a>
                                             </li>
                                             <% }) %>
                                     </ul>
                                     <% } else { %>
-                                        <span class="small">Você ainda não tem empresas. <a href="/empresa"
-                                                class="text-decoration-none">Criar Empresa</a></span>
+                                        <p class="small">Você ainda não tem empresas.</p>
                                         <% } %>
 
-                                            <br>
+                                            <button type="button" class="btn btn-primary mt-3">
+                                                <a href="/empresa" class="text-light text-decoration-none">Criar
+                                                    Empresa</a>
+                                            </button><br><br>
+
                                             <button type="button" class="btn btn-secondary mt-3">
                                                 <a class="text-light text-decoration-none"
                                                     href="/api/auth/logout">Sair</a>
