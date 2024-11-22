@@ -38,24 +38,25 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.render('index', { warning: 'Usuário não encontrado', layout: false });
+                return res.render('index', { warning: 'Usuário não encontrado' });
             }
 
             const empresas = await Empresa.findAll({ where: { idUsuario } });
 
-            return res.render('home', { usuario, empresas, layout: false });
+            return res.render('home', { usuario, empresas });
         } catch (error) {
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [], layout: false });
+            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [] });
         }
     },
 
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { email, senha, nome } = req.body;
+        const empresas = await Empresa.findAll({ where: { idUsuario } });
 
         if (!validator.isEmail(email)) {
-            return res.render('home', { warning: 'Email inválido', usuario });
+            return res.render('home', { warning: 'Email inválido', usuario, empresas, layout: 'layout'});
         }
 
         try {
@@ -67,7 +68,7 @@ module.exports = {
 
             const usuarioExistente = await Usuario.findOne({ where: { email } });
             if (usuarioExistente && usuarioExistente.idUsuario !== idUsuario) {
-                return res.render('home', { warning: 'Email já cadastrado', usuario });
+                return res.render('home', { warning: 'Email já cadastrado', usuario, empresas, layout: 'layout'});
             }
 
             usuario.email = email || usuario.email;
@@ -79,12 +80,12 @@ module.exports = {
 
             await usuario.save();
 
-            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario });
-        } catch (error) {
-            console.error(error);
-            return res.render('home', { error: 'Erro ao editar usuário' });
-        }
-    },
+            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario, empresas, layout: 'layout'});
+    } catch(error) {
+        console.error(error);
+        return res.render('home', { error: 'Erro ao editar usuário', usuario, empresas, layout: 'layout' });
+    }
+},
 
     excluir: async (req, res) => {
         const { idUsuario } = req;
