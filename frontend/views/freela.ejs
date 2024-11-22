@@ -33,16 +33,16 @@
                                             <%= success %>
                                         </div>
                                         <% } %>
-
                                             <form method="POST" action="/api/freela/cadastrar/<%= idEmpresa %>">
+                                                <h2 class="text-dark text-center mb-4">Cadastro de Freela</h2>
                                                 <div class="mb-3">
-                                                    <label for="nome" class="form-label">Nome do Freela</label>
+                                                    <label for="nome" class="form-label">Título do Trabalho</label>
                                                     <input type="text" class="form-control" id="nome" name="nome"
                                                         required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="descricao" class="form-label">Descrição</label>
-                                                    <textarea class="form-control" id="descricao" name="descricao"
+                                                    <textarea class="form-control" id="descricao" name="descricao" rows="3" style="resize: none;"
                                                         required></textarea>
                                                 </div>
                                                 <div class="mb-3">
@@ -57,7 +57,7 @@
                                                         name="dataValidade" required>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary">Cadastrar Freela</button>
+                                                <button type="submit" class="btn btn-success w-100">Cadastrar Freela</button>
                                             </form>
 
                 </div>
