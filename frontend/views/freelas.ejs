@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <title>Home Freelancer</title>
+</head>
+
+<body class="body-tela-inicial">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="perfilFreelancers.html">
+                <img src="/assets/img/PerfilLinkedOut.png" alt="Foto de Perfil" class="profile-pic">
+            </a>
+
+            <h1 class="h1center mx-auto">Seja bem-vindo ao Linked Out, Freelancer!</h1>
+            <div class="collapse navbar-collapse d-flex align-items-center" id="navbarSupportedContent">
+                <form class="d-flex mx-auto" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="dropdown ms-auto">
+                <button class="navbar-toggler dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="VagasNegociaçãoFreelancers.html">Vagas em Negociação</a></li>
+                    <li><a class="dropdown-item" href="VagasAndamentoFreelancers.html">Vagas em Andamento</a></li>
+                    <li><a class="dropdown-item" href="VagasReceberFreelancers.html">Vagas a Receber</a></li>
+                    <li><a class="dropdown-item" href="VagasFinalizadas.html">Vagas Finalizadas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h3 class="h3subtitulo">Vagas Sugeridas</h3>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="list-group-vagas">
+                    <% if (freelas && freelas.length> 0) { %>
+                        <% freelas.forEach(freela=> { %>
+                            <div class="border-vagas">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">
+                                            <%= freela.titulo %>
+                                        </h5>
+                                    </div>
+                                    <p class="mb-1">
+                                        <%= freela.descricao %>
+                                    </p>
+                                    <small class="text-body-secondary">Remuneração: <%= freela.remuneracao %></small>
+                                    <br>
+                                    <small class="text-body-secondary">Status: <%= freela.statusFreela %></small>
+                                    <br>
+                                    <small class="text-body-secondary">Data de Criação: <%= freela.dataCriacao %>
+                                            </small>
+                                    <br>
+                                    <small class="text-body-secondary">Data de Validade: <%= freela.dataValidade %>
+                                            </small>
+                                    <br>
+                                    <small class="text-body-secondary">Categoria: <%= freela.idCategoria %></small>
+                                </a>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p class="text-center">Nenhuma vaga disponível no momento.</p>
+                                    <% } %>
+
+                                        <div class="pagination">
+                                            <% if (currentPage> 1) { %>
+                                                <a href="?page=<%= currentPage - 1 %>" class="btn btn-primary">Página
+                                                    Anterior</a>
+                                                <% } %>
+                                                    <% if (currentPage < totalPages) { %>
+                                                        <a href="?page=<%= currentPage + 1 %>"
+                                                            class="btn btn-primary">Próxima Página</a>
+                                                        <% } %>
+                                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
