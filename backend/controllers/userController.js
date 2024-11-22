@@ -38,15 +38,15 @@ module.exports = {
             const usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.render('home', { warning: 'Usuário não encontrado' });
+                return res.render('index', { warning: 'Usuário não encontrado', layout: false });
             }
 
             const empresas = await Empresa.findAll({ where: { idUsuario } });
 
-            return res.render('home', { usuario, empresas });
+            return res.render('home', { usuario, empresas, layout: false });
         } catch (error) {
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [] });
+            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [], layout: false });
         }
     },
 
