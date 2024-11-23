@@ -52,7 +52,9 @@ app.get('/empresa', (req, res) => {
   res.render('empresa', {layout: false});
 });
 
-app.get('/empresa/:idEmpresa/freela', (req, res) => {
+app.get('/freelaEditar/:idFreela', authMiddleware, freelaController.listar);
+
+app.get('/empresa/:idEmpresa/freela', (req, res) => { 
   const idEmpresa = req.params.idEmpresa;
   res.render('freela', { idEmpresa: idEmpresa, layout: false });
 });
