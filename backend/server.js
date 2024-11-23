@@ -3,11 +3,10 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const sequelize = require('./config/database');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-require('./models/relacoes');
 const app = express();
 const port = 8080;
+const cors = require('cors');
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
@@ -29,6 +28,7 @@ const empresaRoute = require('./routes/empresaRoute');
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
 const userController = require('./controllers/userController');
+const categoriaController = require('./controllers/categoriaController');
 
 
 app.use('/api/empresa', empresaRoute);
@@ -51,6 +51,17 @@ sequelize.authenticate()
   .then(() => {
     console.log('SUCESSO!\nTABELAS SINCRONIZADAS');
     // Iniciar o servidor após a conexão e a sincronização do banco de dados
+
+    app.get('/categoria/categoriaFindAll', async (req, res) => {
+      try {
+        const categorias = await Categoria.findAll();
+        res.json(categorias);
+      } catch (error) {
+        console.error('Erro ao buscar categorias:', error);
+        res.status(500).json({ message: 'Erro interno no servidor' });
+      }
+    });
+
     app.listen(port, () => {
       console.log(`Servidor rodando em http://localhost:${port}`);
     });
