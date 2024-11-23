@@ -1,126 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <title>Gerenciar Empresa</title>
 </head>
-
 <body>
     <div class="container-fluid vh-100">
         <h2 class="text-center">Gerenciar <%= empresa.nome %></h2>
 
-        <% if (typeof warning !=='undefined' && warning) { %>
+        <% if (typeof warning !== 'undefined' && warning) { %>
             <div class="alert alert-warning mt-3" role="alert">
                 <%= warning %>
             </div>
-            <% } %>
+        <% } %>
 
-                <% if (typeof error !=='undefined' && error) { %>
-                    <div class="alert alert-danger mt-3" role="alert">
-                        <%= error %>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger mt-3" role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/api/empresa/editar">
+            <div class="input-group mb-3">
+                <input type="hidden" name="idEmpresa" value="<%= empresa.idEmpresa %>">
+                <input type="text" class="form-control" name="nome" value="<%= empresa.nome %>" placeholder="Nome da Empresa">
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="cnpj" value="<%= empresa.cnpj %>" placeholder="CNPJ">
+            </div>
+            <div class="input-group mb-3">
+                <textarea class="form-control" name="sobreNos" placeholder="Sobre Nós"><%= empresa.sobreNos %></textarea>
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="latitude" value="<%= empresa.latitude %>" placeholder="Latitude">
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="longitude" value="<%= empresa.longitude %>" placeholder="Longitude">
+            </div>
+            <button type="submit" class="btn btn-success">Salvar Alterações</button>
+        </form>
+
+        <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+            Excluir Empresa
+        </button>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <% } %>
-
-                        <form method="POST" action="/api/empresa/editar">
-                            <div class="input-group mb-3">
-                                <input type="hidden" name="idEmpresa" value="<%= empresa.idEmpresa %>">
-                                <input type="text" class="form-control" name="nome" value="<%= empresa.nome %>"
-                                    placeholder="Nome da Empresa">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cnpj" value="<%= empresa.cnpj %>"
-                                    placeholder="CNPJ">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" name="sobreNos"
-                                    placeholder="Sobre Nós"><%= empresa.sobreNos %></textarea>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="latitude" value="<%= empresa.latitude %>"
-                                    placeholder="Latitude">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="longitude"
-                                    value="<%= empresa.longitude %>" placeholder="Longitude">
-                            </div>
-
-                            <button type="submit" class="btn btn-success">Salvar Alterações</button>
+                    <div class="modal-body">
+                        Tem certeza que deseja excluir sua empresa? <b>Esta ação não pode ser desfeita.</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="POST" action="/api/empresa/<%= empresa.idEmpresa %>/excluir">
+                            <button type="submit" class="btn btn-danger">Excluir Empresa</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal"
-                            data-bs-target="#confirmDeleteModal">
-                            Excluir Empresa
-                        </button>
+        <a href="/empresa/<%= empresa.idEmpresa %>/freela" class="btn btn-primary mt-3">Criar Freela</a>
+        <a href="/home" class="btn btn-secondary mt-3">Voltar para Home</a>
 
-                        <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-                            aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Tem certeza que deseja excluir sua empresa? <b>Esta ação não pode ser
-                                            desfeita.</b>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                        <form method="POST" action="/api/empresa/<%= empresa.idEmpresa %>/excluir">
-                                            <button type="submit" class="btn btn-danger">Excluir Empresa</button>
-                                        </form>
+        <div class="mt-5">
+            <h3 class="text-center">Freelas da <%= empresa.nome %></h3>
+
+            <% if (freelas.length > 0) { %>
+                <div class="list-group">
+                    <% freelas.forEach(function(freela) { %>
+                        <div class="list-group-item">
+                            <h5><%= freela.nome %></h5>
+                            <p><strong>Descrição:</strong> <%= freela.descricao %></p>
+                            <p><strong>Remuneração:</strong> R$ <%= freela.valor %></p>
+                            <p><strong>Data de Validade:</strong> <%= new Date(freela.dataValidade).toLocaleDateString() %></p>
+                            <p><strong>Status:</strong> <%= freela.statusFreela %></p>
+
+                            <a href="/freelaEditar/<%= freela.idFreela %>" class="btn btn-warning btn-sm">Editar</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal<%= freela.idFreela %>">Excluir</button>
+
+                            <div class="modal fade" id="confirmDeleteModal<%= freela.idFreela %>" tabindex="-1" aria-labelledby="confirmDeleteModalLabel<%= freela.idFreela %>" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmDeleteModalLabel<%= freela.idFreela %>">Confirmar Exclusão</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja excluir este freela? <b>Esta ação não pode ser desfeita.</b>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <form method="POST" action="/api/freela/excluir/<%= freela.idFreela %>">
+                                                <button type="submit" class="btn btn-danger">Excluir Freela</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <br>
-                        <a href="/empresa/<%= empresa.idEmpresa %>/freela" class="btn btn-primary mt-3">Criar Freela</a>
-                        <br>
-                        <a href="/home" class="btn btn-secondary mt-3">Voltar para Home</a>
-
-                        <div class="mt-5">
-                            <h3 class="text-center">Freelas da <%= empresa.nome %>
-                            </h3>
-
-                            <% if (freelas.length> 0) { %>
-                                <div class="list-group">
-                                    <% freelas.forEach(function(freela) { %>
-                                        <div class="list-group-item">
-                                            <h5>
-                                                <%= freela.nome %>
-                                            </h5>
-                                            <p><strong>Descrição:</strong>
-                                                <%= freela.descricao %>
-                                            </p>
-                                            <p><strong>Remuneração:</strong> R$ <%= freela.valor %>
-                                            </p>
-                                            <p><strong>Data de Validade:</strong>
-                                                <%= new Date(freela.dataValidade).toLocaleDateString() %>
-                                            </p>
-                                            <p><strong>Status:</strong>
-                                                <%= freela.statusFreela %>
-                                            </p>
-                                        </div><br>
-                                        <% }); %>
-                                </div>
-                                <% } else { %>
-                                    <p class="text-center">Ainda não há freelas cadastrados para esta empresa.</p>
-                                    <% } %>
-                        </div>
-
+                        </div><br>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <p class="text-center">Nenhum freela encontrado.</p>
+            <% } %>
+        </div>
     </div>
 
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
