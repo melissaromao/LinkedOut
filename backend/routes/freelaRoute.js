@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/cadastrar/:idEmpresa', authMiddleware, freelaController.cadastrar);
 router.get('/listar', authMiddleware, freelaController.listarFreelas);
 router.get('/listar/:idEmpresa', authMiddleware, freelaController.listarFreela);
-router.post('/editar', authMiddleware, freelaController.editar);
+router.post('/editar/:idFreela', authMiddleware, freelaController.editar);
 router.post('/excluir/:idFreela', authMiddleware, freelaController.excluir);
 
 module.exports = router;
