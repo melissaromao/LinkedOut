@@ -31,6 +31,31 @@ module.exports = {
         }
     },
 
+    listar: async (req, res) => {
+        const { idUsuario } = req;  
+        const { idFreela } = req.params; 
+    
+        try {
+            const freela = await Freela.findByPk(idFreela);
+    
+            if (!freela) {
+                return res.render('home', { warning: 'Freela não encontrado' });
+            }
+    
+            const empresa = await Empresa.findOne({ where: { idEmpresa: freela.idEmpresa, idUsuario } });
+    
+            if (!empresa) {
+                return res.render('home', { warning: 'Você não tem permissão para editar este freela' });
+            }
+    
+            return res.render('freelaEditar', { freela, empresa });
+    
+        } catch (error) {
+            console.log(error);
+            return res.render('home', { error: 'Erro ao carregar dados para edição' });
+        }
+    },
+
     listarFreelas: async (req, res) => {
         try {
             const limit = 10;
@@ -74,54 +99,64 @@ module.exports = {
     listarFreela: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa } = req.params;
-
+    
         try {
+            console.log(`idEmpresa: ${idEmpresa}`);
+    
             const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario } });
-
+    
             if (!empresa) {
                 return res.render('home', { warning: 'Empresa não encontrada ou você não tem permissão para acessá-la' });
             }
-
+    
             const freelas = await Freela.findAll({ where: { idEmpresa } });
+    
+            if (!freelas || freelas.length === 0) {
+                return res.render('empresaHome', { warning: 'Não há freelas associados a esta empresa.' });
+            }
+    
             return res.render('empresaHome', { freelas, empresa });
         } catch (error) {
             console.log(error);
-            return res.render('home', { error: 'Erro ao listar freelas da empresa' });
+            return res.render('home', { error: `Erro ao listar freelas da empresa: ${error.message}` });
         }
-    },
+    },    
 
     editar: async (req, res) => {
-        const { idUsuario } = req;
-        const { idFreela, nome, descricao, valor, dataValidade, statusFreela } = req.body;
-
+        const { idUsuario } = req; 
+        const { idFreela } = req.params; 
+        const { nome, descricao, valor, dataValidade, statusFreela } = req.body; 
+    
         try {
             const freela = await Freela.findByPk(idFreela);
-
+    
             if (!freela) {
-                return res.render('home', { warning: 'Freela não encontrado' });
+                return res.render('home', { warning: 'Freela não encontrado', usuario, empresas});
             }
-
+    
             const empresa = await Empresa.findOne({ where: { idEmpresa: freela.idEmpresa, idUsuario } });
-
+    
             if (!empresa) {
-                return res.render('home', { warning: 'Você não tem permissão para editar este freela' });
+                return res.render('home', { warning: 'Você não tem permissão para editar este freela', usuario, empresas });
             }
-
+    
             freela.nome = nome || freela.nome;
             freela.descricao = descricao || freela.descricao;
             freela.valor = valor || freela.valor;
             freela.dataValidade = dataValidade || freela.dataValidade;
             freela.statusFreela = statusFreela || freela.statusFreela;
-
+    
             await freela.save();
-
+    
             const freelas = await Freela.findAll({ where: { idEmpresa: empresa.idEmpresa } });
+    
             return res.render('empresaHome', { success: 'Freela editado com sucesso', empresa, freelas });
+    
         } catch (error) {
             console.log(error);
             return res.render('home', { error: 'Erro ao editar freela' });
         }
-    },
+    },    
 
     excluir: async (req, res) => {
         const { idUsuario } = req;
