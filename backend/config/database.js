@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('linkedout', 'postgres', 'dani158575', {
+const sequelize = new Sequelize('linkedout', 'postgres', 'root', {
     dialect: 'postgres',
     host: 'localhost',
-    port: 5433
+    port: 5432
 });
 sequelize.authenticate()
     .then(() => {
