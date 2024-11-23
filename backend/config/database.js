@@ -4,13 +4,12 @@ const sequelize = new Sequelize('linkedout', 'postgres', 'dani158575', {
     host: 'localhost',
     port: 5433
 });
-
 sequelize.authenticate()
-  .then(() => {
-    console.log('Conexão com o banco de dados estabelecida com sucesso.');
-  })
-  .catch((error) => {
-    console.error('Não foi possível conectar ao banco de dados:', error);
-  });
+    .then(() => {
+        console.log('Conexão estabelecida com sucesso.');
+    })
+    .catch(err => {
+        console.error('Erro ao conectar com o banco de dados:', err);
+    });
 
 module.exports = sequelize;
