@@ -21,16 +21,19 @@ app.use(cors());
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const empresaRoute = require('./routes/empresaRoute');
+const freelancerRoute = require('./routes/freelancerRoute');
 const categoriaRoute = require('./routes/categoriaRoute');
 
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
+const freelancerController = require('./controllers/freelancerController');
 const userController = require('./controllers/userController');
 const categoriaController = require('./controllers/categoriaController');
 
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/empresa', empresaRoute);
+app.use('/api/freelancer', freelancerRoute);
 app.use('/api/categoria', categoriaRoute);
 app.use(express.static(path.join(__dirname, '../frontend')));
 
@@ -49,6 +52,12 @@ app.get('/empresa', (req, res) => {
 });
 
 app.get('/empresa/:idEmpresa', authMiddleware, empresaController.listar);
+
+app.get('/freelancer', (req, res) => {
+  res.render('freelancer');
+});
+
+app.get('/freelancer/:idFreelancer', authMiddleware, freelancerController.listar);
 
 app.get('/categoria/categoriaFindAll', async (req, res) => {
   try {
