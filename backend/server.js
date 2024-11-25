@@ -59,15 +59,11 @@ app.get('/freelancer', (req, res) => {
 
 app.get('/freelancer/:idFreelancer', authMiddleware, freelancerController.listar);
 
-app.get('/categoria/categoriaFindAll', async (req, res) => {
-  try {
-    const categorias = await Categoria.findAll();
-    res.json(categorias);
-  } catch (error) {
-    console.error('Erro ao buscar categorias:', error);
-    res.status(500).json({ message: 'Erro interno no servidor' });
-  }
+app.get('/categoria', (req, res) => {
+  res.render('categoria');
 });
+
+app.get('/categorias', categoriaController.findAll);
 
 sequelize.authenticate()
   .then(() => {
