@@ -89,7 +89,8 @@
 
                                     <br>
                                     <h3 class="mt-4">Freelancers</h3>
-                                    <% if (typeof freelancers !=='undefined' && freelancers && freelancers.length> 0) { %>
+                                    <% if (typeof freelancers !=='undefined' && freelancers && freelancers.length> 0) {
+                                        %>
                                         <ul class="list-group">
                                             <% freelancers.forEach(freelancer=> { %>
                                                 <li>
@@ -100,11 +101,10 @@
                                                 <% }) %>
                                         </ul>
                                         <% } else { %>
-                                            <span class="small">Você ainda não tem freelancers. <a href="/freelancer"
-                                                    class="text-decoration-none">Criar Freelancer</a></span>
-                                            <% } %> <br>
-                                            <a href="/categoria"
-                                            class="text-decoration-none">Criar Categoria</a>
+                                            <span class="small">Você ainda não tem freelancers.</span>
+                                            <% } %> <a href="/freelancer" class="text-decoration-none">Criar
+                                                    Freelancer</a> <br>
+                                                <a href="/categoria" class="text-decoration-none">Criar Categoria</a>
                                                 <br>
                                                 <button type="button" class="btn btn-secondary mt-3">
                                                     <a class="text-light text-decoration-none"
