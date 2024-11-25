@@ -1,82 +1,87 @@
 const Categoria = require('../models/Categoria');
 
 module.exports = {
-    // Criar Categoria
-    async create(req, res) {
-        try {
-          const { nome, descricao} = req.body;
-            const categoriaCreate = await Categoria.create(req.body);
-            res.status(201).json(categoriaCreate);
-        } catch (error) {
-            res.status(500).json({ error: 'Erro ao criar categoria' });
-        }
-    },
+  create: async (req, res) => {
+    const { nome, descricao } = req.body;
 
-    // Listar todas as Categorias
-    async findAll(req, res) {
-        try {
-      
-            const categoriaFindAll = await Categoria.findAll();
-            res.status(200).json(categoriaFindAll);
-        } catch (error) {
-            res.status(500).json({ error: 'Erro ao listar categorias' });
-        }
-    },
-
-    // Buscar Categoria por ID
-    async findOne(req, res) {
-        try {
-          const { id } = req.params;
-      const categoriaFindOne = await Categoria.findByPk(id);
-      if (!categoriaFindOne) {
-        return res.status(404).json({ error: 'Categoria não encontrada.' });
-      }
-      return res.status(200).json(categoriaFindOne);
+    try {
+      const categoriaCreate = await Categoria.create({ nome, descricao });
+      return res.render('categoria', { success: 'Categoria criada com sucesso', categoria: categoriaCreate });
     } catch (error) {
-      return res.status(400).json({ error: 'Erro ao buscar categoria.' });
+      console.error(error);
+      return res.render('categoria', { error: 'Erro ao criar categoria' });
     }
   },
 
-    // Atualizar Categoria
-    async update(req, res) {
-      try {
-          const { id } = req.params;
-          const { nome, descricao } = req.body;
-
-          const categoriaUpdate = await Categoria.findByPk(id);
-
-          // Verificar se a categoria existe antes de atualizar
-          if (!categoriaUpdate) {
-              return res.status(404).json({ error: 'Categoria não encontrada' });
-          }
-
-          // Atualizar categoria
-          await categoriaUpdate.update({ nome, descricao });
-
-          // Retornar a categoria atualizada
-          res.status(200).json(categoriaUpdate);
-      } catch (error) {
-          res.status(500).json({ error: 'Erro ao atualizar categoria' });
-      }
+  findAll: async (req, res) => {
+    try {
+      const categorias = await Categoria.findAll();
+      return res.render('categorias', { categorias });
+    } catch (error) {
+      console.error(error);
+      return res.render('categorias', { error: 'Erro ao listar categorias' });
+    }
   },
 
-    // Excluir Categoria
-    async delete(req, res) {
-      try {
-          const { id } = req.params;
-          const categoriaDelete = await Categoria.findByPk(id);
+  findOne: async (req, res) => {
+    const { idCategoria } = req.params;
 
-          // Verificar se a categoria existe antes de excluir
-          if (!categoriaDelete) {
-              return res.status(404).json({ error: 'Categoria não encontrada' });
-          }
-
-          // Excluir categoria
-          await categoriaDelete.destroy();
-          res.status(204).send();
-      } catch (error) {
-          res.status(500).json({ error: 'Erro ao excluir categoria' });
+    try {
+      const categoria = await Categoria.findByPk(idCategoria);
+      if (!categoria) {
+        return res.render('categoria', { warning: 'Categoria não encontrada' });
       }
+      return res.render('categoriaDetalhes', { categoria });
+    } catch (error) {
+      console.error(error);
+      return res.render('categoria', { error: 'Erro ao buscar categoria' });
+    }
+  },
+
+  update: async (req, res) => {
+    const { idCategoria } = req.params;
+    const { nome, descricao } = req.body;
+
+    try {
+        const categoria = await Categoria.findByPk(idCategoria);
+
+        if (!categoria) {
+            return res.render('categorias', {
+                warning: 'Categoria não encontrada',
+                categorias: await Categoria.findAll(),
+            });
+        }
+
+        categoria.nome = nome || categoria.nome;
+        categoria.descricao = descricao || categoria.descricao;
+
+        await categoria.save();
+
+        return res.render('categorias', { success: 'Categoria atualizada com sucesso', categorias: await Categoria.findAll() });
+    } catch (error) {
+        console.error(error);
+        return res.render('categorias', {
+            error: 'Erro ao atualizar categoria',
+            categorias: await Categoria.findAll(),
+        });
+    }
+},
+
+  delete: async (req, res) => {
+    const { idCategoria } = req.params;
+    const categorias = await Categoria.findAll();
+
+    try {
+      const categoria = await Categoria.findByPk(idCategoria);
+      if (!categoria) {
+        return res.render('categorias', { warning: 'Categoria não encontrada', categorias });
+      }
+
+      await categoria.destroy();
+      return res.render('categorias', { success: 'Categoria excluída com sucesso', categorias });
+    } catch (error) {
+      console.error(error);
+      return res.render('categorias', { error: 'Erro ao excluir categoria', categorias });
+    }
   }
 };
-
