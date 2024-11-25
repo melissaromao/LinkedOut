@@ -14,88 +14,104 @@
 
         <% if (typeof warning !=='undefined' && warning) { %>
             div class="alert alert-warning mt-3" role="alert">
-                <%= warning %>
+            <%= warning %>
+    </div>
+    <% } %>
+
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="alert alert-danger mt-3" role="alert">
+                <%= error %>
             </div>
             <% } %>
 
-                <% if (typeof error !=='undefined' && error) { %>
-                    <div class="alert alert-danger mt-3" role="alert">
-                        <%= error %>
+                <% if (typeof success !=='undefined' && success) { %>
+                    <div class="alert alert-success mt-3" role="alert">
+                        <%= success %>
                     </div>
                     <% } %>
 
-                        <% if (typeof success !=='undefined' && success) { %>
-                            <div class="alert alert-success mt-3" role="alert">
-                                <%= success %>
+                        <form method="POST" action="/api/user/editar">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="nome" value="<%= usuario.nome %>">
                             </div>
-                            <% } %>
 
-                                <form method="POST" action="/api/user/editar">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="nome" value="<%= usuario.nome %>">
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" name="email" value="<%= usuario.email %>">
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </form><br>
+
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#confirmDeleteModal">
+                            Excluir Conta
+                        </button>
+
+                        <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+                            aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
-
-                                    <div class="input-group mb-3">
-                                        <input type="email" class="form-control" name="email"
-                                            value="<%= usuario.email %>">
+                                    <div class="modal-body">
+                                        Tem certeza que deseja excluir sua conta? <b>Esta ação não pode ser
+                                            desfeita.</b>
                                     </div>
-
-                                    <button type="submit" class="btn btn-success">Salvar</button>
-                                </form><br>
-
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#confirmDeleteModal">
-                                    Excluir Conta
-                                </button>
-
-                                <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-                                    aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Tem certeza que deseja excluir sua conta? <b>Esta ação não pode ser
-                                                    desfeita.</b>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancelar</button>
-                                                <form method="POST" action="/api/user/excluir">
-                                                    <button type="submit" class="btn btn-danger">Excluir Conta</button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <form method="POST" action="/api/user/excluir">
+                                            <button type="submit" class="btn btn-danger">Excluir Conta</button>
+                                        </form>
                                     </div>
                                 </div>
-                                <h3 class="mt-4">Minhas Empresas</h3>
-                                <% if (typeof empresas !=='undefined' && empresas && empresas.length> 0) { %>
-                                    <ul class="list-group">
-                                        <% empresas.forEach(empresa=> { %>
-                                            <li>
-                                                <a href="/empresa/<%= empresa.idEmpresa %>">
-                                                    <%= empresa.nome %>
-                                                </a>
-                                            </li>
-                                            <% }) %>
-                                    </ul>
-                                    <% } else { %>
-                                        <span class="small">Você ainda não tem empresas. <a href="/empresa"
-                                                class="text-decoration-none">Criar Empresa</a></span>
-                                        <% } %>
+                            </div>
+                        </div>
+                        <h3 class="mt-4">Minhas Empresas</h3>
+                        <% if (typeof empresas !=='undefined' && empresas && empresas.length> 0) { %>
+                            <ul class="list-group">
+                                <% empresas.forEach(empresa=> { %>
+                                    <li>
+                                        <a href="/empresa/<%= empresa.idEmpresa %>">
+                                            <%= empresa.nome %>
+                                        </a>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <span class="small">Você ainda não tem empresas. <a href="/empresa"
+                                        class="text-decoration-none">Criar Empresa</a></span>
+                                <% } %>
 
-                                            <br>
-                                            <button type="button" class="btn btn-secondary mt-3">
-                                                <a class="text-light text-decoration-none"
-                                                    href="/api/auth/logout">Sair</a>
-                                            </button>
-    </div>
+                                    <br>
+                                    <h3 class="mt-4">Freelancers</h3>
+                                    <% if (typeof freelancers !=='undefined' && freelancers && freelancers.length> 0) { %>
+                                        <ul class="list-group">
+                                            <% freelancers.forEach(freelancer=> { %>
+                                                <li>
+                                                    <a href="/freelancer/<%= freelancer.idFreelancer %>">
+                                                        <%= freelancer.nome %>
+                                                    </a>
+                                                </li>
+                                                <% }) %>
+                                        </ul>
+                                        <% } else { %>
+                                            <span class="small">Você ainda não tem freelancers. <a href="/freelancer"
+                                                    class="text-decoration-none">Criar Freelancer</a></span>
+                                            <% } %>
 
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+                                                <br>
+                                                <button type="button" class="btn btn-secondary mt-3">
+                                                    <a class="text-light text-decoration-none"
+                                                        href="/api/auth/logout">Sair</a>
+                                                </button>
+                                                </div>
+
+                                                <script src="/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

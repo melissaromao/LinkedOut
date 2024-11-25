@@ -2,6 +2,7 @@ const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const Empresa = require('../models/Empresa');
+const Freelancer = require('../models/Freelancer');
 
 module.exports = {
     cadastrar: async (req, res) => {
@@ -42,11 +43,12 @@ module.exports = {
             }
 
             const empresas = await Empresa.findAll({ where: { idUsuario } });
+            const freelancers = await Freelancer.findAll({ where: { idUsuario } });
 
-            return res.render('home', { usuario, empresas });
+            return res.render('home', { usuario, empresas, freelancers });
         } catch (error) {
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [] });
+            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [], freelancers: [] });
         }
     },
 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <title>Gerenciar Freelancer - <%= freelancer.nome %></title>
+</head>
+
+<body>
+    <div class="container-fluid vh-100">
+        <h2 class="text-center">Gerenciar Freelancer: <%= freelancer.nome %></h2>
+
+        <% if (typeof warning !=='undefined' && warning) { %>
+            <div class="alert alert-warning mt-3" role="alert">
+                <%= warning %>
+            </div>
+        <% } %>
+
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="alert alert-danger mt-3" role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/api/freelancer/editar">
+            <div class="input-group mb-3">
+                <input type="hidden" name="idFreelancer" value="<%= freelancer.idFreelancer %>">
+                <input type="text" class="form-control" name="nome" value="<%= freelancer.nome %>" placeholder="Nome do Freelancer">
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="cpf" value="<%= freelancer.cpf %>" placeholder="CPF">
+            </div>
+
+            <div class="input-group mb-3">
+                <textarea class="form-control" name="tituloProfissional" placeholder="Titulo Profissional"><%= freelancer.tituloProfissional %></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <textarea class="form-control" name="sobreMim" placeholder="Sobre Mim"><%= freelancer.sobreMim %></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <textarea class="form-control" type="date" name="dataNasc" placeholder="data de Nascimento"><%= freelancer.dataNasc %></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <textarea class="form-control" name="foto" placeholder="foto"><%= freelancer.foto %></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="latitude" value="<%= freelancer.latitude %>" placeholder="Latitude">
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="longitude" value="<%= freelancer.longitude %>" placeholder="Longitude">
+            </div>
+
+            <button type="submit" class="btn btn-success">Salvar Alterações</button>
+        </form>
+
+        <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+            Excluir Freelancer
+        </button>
+
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza que deseja excluir este freelancer? <b>Esta ação não pode ser desfeita.</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="POST" action="/api/freelancer/<%= freelancer.idFreelancer %>/excluir">
+                            <button type="submit" class="btn btn-danger">Excluir Freelancer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <a href="/home" class="btn btn-secondary mt-3">Voltar para Home</a>
+    </div>
+
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
