@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Categorias</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <img src="/assets/img/LogoLinkedOut.jpeg" class="img-fluid" alt="Logo Linked Out">
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="form-freela p-4 rounded">
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
+
+                    <% if (typeof success !== 'undefined' && success) { %>
+                        <div class="alert alert-success mt-3" role="alert">
+                            <%= success %>
+                        </div>
+                    <% } %>
+
+                    <h3>Cadastro de Categoria</h3>
+                    <form method="POST" action="/api/categoria/cadastrar">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome da Categoria</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Tecnologia" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <input class="btn btn-success w-100" type="submit" value="Cadastrar Categoria">
+                        </div>
+                    </form>
+                    <span class="small">Veja as categorias existentes. <a href="/categorias"
+                        class="text-decoration-none">Categorias</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
