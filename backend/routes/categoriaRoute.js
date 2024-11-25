@@ -3,10 +3,10 @@ const categoriaController = require('../controllers/categoriaController');
 
 const router = express.Router();
 
-router.post('/categoriaCreate', categoriaController.create);       // Criar categoria
-router.get('/categoriaFindAll', categoriaController.findAll);        // Listar categorias
-router.get('/categoriaFindOne/:id', categoriaController.findOne);    // Buscar categoria por ID
-router.put('/categoriaUpdate/:id', categoriaController.update);     // Atualizar categoria
-router.delete('/categoriaDelete/:id', categoriaController.delete);  // Excluir categoria
+router.post('/cadastrar', categoriaController.create);  
+router.get('/listar', categoriaController.findAll);    
+router.get('/:idCategoria', categoriaController.findOne);
+router.post('/editar/:idCategoria', categoriaController.update);   
+router.post('/deletar/:idCategoria', categoriaController.delete);
 
 module.exports = router;
