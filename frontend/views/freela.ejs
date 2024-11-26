@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Freela</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <title>Cadastro</title>
 </head>
 
 <body>
@@ -33,43 +33,38 @@
                                             <%= success %>
                                         </div>
                                         <% } %>
-
-
-                                            <form action="/api/user/cadastro" method="post" id="sign-up-freela"
-                                                class="mb-5">
-                                                <h2 class="text-dark text-center mb-4">Cadastre-se</h2>
-
+                                            <form method="POST" action="/api/freela/cadastrar/<%= idEmpresa %>">
+                                                <h2 class="text-dark text-center mb-4">Cadastro de Freela</h2>
                                                 <div class="mb-3">
-                                                    <label for="nome" class="form-label">Nome</label>
-                                                    <input type="text" id="nome" name="nome" placeholder="Seu nome"
-                                                        class="form-control" required>
+                                                    <label for="nome" class="form-label">Título do Trabalho</label>
+                                                    <input type="text" class="form-control" id="nome" name="nome"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="descricao" class="form-label">Descrição</label>
+                                                    <textarea class="form-control" id="descricao" name="descricao" rows="3" style="resize: none;"
+                                                        required></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="valor" class="form-label">Valor</label>
+                                                    <input type="number" class="form-control" id="valor" name="valor"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="dataValidade" class="form-label">Data de
+                                                        Validade</label>
+                                                    <input type="date" class="form-control" id="dataValidade"
+                                                        name="dataValidade" required>
                                                 </div>
 
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="email" id="email" name="email"
-                                                        placeholder="meuemail@email.com" class="form-control" required>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="senha" class="form-label">Senha</label>
-                                                    <input type="password" id="senha" name="senha" placeholder="******"
-                                                        class="form-control" required>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <input class="btn btn-success w-100" type="submit" value="Cadastrar"
-                                                        id="cadastrar">
-                                                </div>
-                                                <div class="text-center">
-                                                    <span class="small">Já tem uma conta? <a href="/"
-                                                            class="text-decoration-none">Entre aqui</a></span>
-                                                </div>
+                                                <button type="submit" class="btn btn-success w-100">Cadastrar Freela</button>
                                             </form>
+
                 </div>
             </div>
         </div>
     </div>
+
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 

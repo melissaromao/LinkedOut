@@ -32,7 +32,6 @@ const Freela = database.define('freela', {
 
     idCategoria: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
             model: Categoria,
             key: 'idCategoria'

@@ -14,10 +14,11 @@ module.exports = async (req, res, next) => {
 
         const usuario = await Usuario.findByPk(decoded.idUsuario);
         if (!usuario) {
-            return res.render('index', { error: 'Usuário não encontrado'});
+            return res.render('index', { error: 'Usuário não encontrado' });
         }
 
         req.usuario = usuario;
+        res.locals.usuario = usuario;
         next();
     } catch (error) {
         return res.render('index', { error: 'Token inválido' });
