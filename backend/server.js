@@ -30,6 +30,8 @@ const freelancerController = require('./controllers/freelancerController');
 const userController = require('./controllers/userController');
 const categoriaController = require('./controllers/categoriaController');
 
+const Categoria = require('./models/Categoria');
+
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/empresa', empresaRoute);
@@ -47,8 +49,14 @@ app.get('/cadastro', (req, res) => {
 
 app.get('/home', authMiddleware, userController.listar);
 
-app.get('/empresa', (req, res) => {
-  res.render('empresa');
+app.get('/empresa', async (req, res) => {
+  try {
+      const categorias = await Categoria.findAll(); 
+      res.render('empresa', { categorias });
+  } catch (error) {
+      console.error(error);
+      res.render('empresa', { error: 'Erro ao carregar categorias' });
+  }
 });
 
 app.get('/empresa/:idEmpresa', authMiddleware, empresaController.listar);
