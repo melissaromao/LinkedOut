@@ -31,7 +31,6 @@ const freelancerController = require('./controllers/freelancerController');
 const userController = require('./controllers/userController');
 const categoriaController = require('./controllers/categoriaController');
 const freelaController = require('./controllers/freelaController');
-
 const Categoria = require('./models/Categoria');
 
 app.use('/api/user', userRoute);
