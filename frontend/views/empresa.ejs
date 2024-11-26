@@ -64,6 +64,25 @@
                                                             <input type="number" step="0.000001" class="form-control"
                                                                 id="longitude" name="longitude">
                                                         </div>
+                                                <div class="mb-3">
+                                                    <label for="idCategoria" class="form-label">Categoria</label>
+                                                    <select class="form-control" id="idCategoria" name="idCategoria" required>
+                                                        <option value="" disabled selected>Selecione uma categoria</option>
+                                                        <% if (typeof categorias !== 'undefined' && categorias.length > 0) { %>
+                                                            <% categorias.forEach(categoria => { %>
+                                                                <option value="<%= categoria.idCategoria %>"><%= categoria.nome %></option>
+                                                            <% }); %>
+                                                        <% } else { %>
+                                                            <option value="" disabled>Nenhuma categoria disponível</option>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="latitude" class="form-label">Latitude</label>
+                                                    <input type="number" step="0.000001" class="form-control"
+                                                        id="latitude" name="latitude">
+                                                </div>
 
                                                         <div class="mb-3">
                                                             <input class="btn btn-success w-100" type="submit"

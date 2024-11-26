@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario');
 const Freelancer = require('../models/Freelancer');
+const Empresa = require('../models/Empresa');
 
 module.exports = {
     cadastrar: async (req, res) => {
@@ -29,9 +30,10 @@ module.exports = {
                 longitude
             });
 
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
             const freelancers = await Freelancer.findAll({ where: { idUsuario } });
 
-            return res.render('home', { success: 'Sucesso ao cadastrar freelancer', freelancer, usuario, freelancers });
+            return res.render('home', { success: 'Sucesso ao cadastrar freelancer', freelancer, usuario, freelancers, empresas });
         } catch (error) {
             console.log(error);
             return res.render('freelancer', { error: 'Erro ao cadastrar freelancer' });
@@ -41,42 +43,44 @@ module.exports = {
     listar: async (req, res) => {
         const { idUsuario } = req;
         const { idFreelancer } = req.params;
-        console.log('ID DO FREELANCER', idFreelancer);
 
         try {
             const usuario = await Usuario.findOne({ where: { idUsuario } });
             const freelancer = await Freelancer.findOne({ where: { idFreelancer, idUsuario } });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
 
             if (!freelancer) {
-                return res.render('home', { warning: 'Freelancer não encontrado', usuario });
+                return res.render('home', { warning: 'Freelancer não encontrado', usuario, empresas });
             }
 
             return res.render('freelancerHome', { success: 'Freelancer encontrado', freelancer, usuario });
         } catch (error) {
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar freelancer', usuario });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
+            return res.render('home', { error: 'Erro ao buscar freelancer', usuario, empresas });
         }
     },
 
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { idFreelancer, cpf, nome, tituloProfissional, sobreMim, dataNasc, foto, latitude, longitude } = req.body;
-    
+
         try {
             const freelancer = await Freelancer.findOne({ where: { idFreelancer, idUsuario } });
-    
+
             if (!freelancer) {
-                return res.render('home', { warning: 'Freelancer não encontrado' });
+                const empresas = await Empresa.findAll({ where: { idUsuario } });
+                return res.render('home', { warning: 'Freelancer não encontrado', usuario, empresas });
             }
-    
+
             if (cpf) {
                 const freelancerExistente = await Freelancer.findOne({ where: { cpf } });
                 if (freelancerExistente && freelancerExistente.idFreelancer !== freelancer.idFreelancer) {
-                    return res.render('home', { warning: 'CPF já cadastrado' });
+                    return res.render('freelancerHome', { warning: 'CPF já cadastrado' });
                 }
                 freelancer.cpf = cpf;
             }
-    
+
             freelancer.nome = nome || freelancer.nome;
             freelancer.tituloProfissional = tituloProfissional || freelancer.tituloProfissional;
             freelancer.sobreMim = sobreMim || freelancer.sobreMim;
@@ -84,21 +88,24 @@ module.exports = {
             freelancer.foto = foto || freelancer.foto;
             freelancer.latitude = latitude || freelancer.latitude;
             freelancer.longitude = longitude || freelancer.longitude;
-    
+
             await freelancer.save();
-    
+
             const freelancers = await Freelancer.findAll({ where: { idUsuario } });
-            return res.render('home', { success: 'Freelancer editado com sucesso', usuario: req.usuario, freelancers });
-    
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
+            return res.render('home', { success: 'Freelancer editado com sucesso', usuario: req.usuario, freelancers, empresas });
+
         } catch (error) {
             console.error('Erro ao editar freelancer:', error);
-    
+
             try {
                 const usuario = await Usuario.findByPk(idUsuario);
-                return res.render('home', { error: 'Erro ao editar freelancer', usuario });
+                const empresas = await Empresa.findAll({ where: { idUsuario } });
+                return res.render('home', { error: 'Erro ao editar freelancer', usuario, freelancers, empresas });
             } catch (usuarioError) {
                 console.error('Erro ao carregar usuário:', usuarioError);
-                return res.render('home', { error: 'Erro ao carregar usuário' });
+                const empresas = await Empresa.findAll({ where: { idUsuario } });
+                return res.render('home', { error: 'Erro ao carregar usuário', usuario, freelancers, empresas });
             }
         }
     },
@@ -111,30 +118,25 @@ module.exports = {
             const freelancer = await Freelancer.findByPk(idFreelancer);
 
             if (!freelancer) {
-                return res.render('home', { warning: 'Freelancer não encontrado' });
+                const empresas = await Empresa.findAll({ where: { idUsuario } });
+                return res.render('home', { warning: 'Freelancer não encontrado', usuario, freelancers, empresas });
             }
 
             await freelancer.destroy();
 
             const usuario = await Usuario.findByPk(idUsuario);
-
-            if (!usuario) {
-                return res.render('home', { warning: 'Usuário não encontrado' });
-            }
-
             const freelancers = await Freelancer.findAll({ where: { idUsuario } });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
 
-            return res.render('home', { success: 'Freelancer excluído com sucesso', usuario, freelancers });
+            return res.render('home', { success: 'Freelancer excluído com sucesso', usuario, freelancers, empresas });
         } catch (error) {
             console.log(error);
 
             const usuario = await Usuario.findByPk(idUsuario);
+            const freelancers = await Freelancer.findAll({ where: { idUsuario } });
+            const empresas = await Empresa.findAll({ where: { idUsuario } });
 
-            if (!usuario) {
-                return res.render('home', { error: 'Erro ao excluir freelancer e usuário não encontrado' });
-            }
-
-            return res.render('home', { error: 'Erro ao excluir freelancer', usuario });
+            return res.render('home', { error: 'Erro ao excluir freelancer', usuario, freelancers, empresas });
         }
     }
 };
