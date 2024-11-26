@@ -62,7 +62,7 @@
                                                         <option value="" disabled selected>Selecione uma categoria</option>
                                                         <% if (typeof categorias !== 'undefined' && categorias.length > 0) { %>
                                                             <% categorias.forEach(categoria => { %>
-                                                                <option value="<%= categoria.id %>"><%= categoria.nome %></option>
+                                                                <option value="<%= categoria.idCategoria %>"><%= categoria.nome %></option>
                                                             <% }); %>
                                                         <% } else { %>
                                                             <option value="" disabled>Nenhuma categoria disponível</option>
