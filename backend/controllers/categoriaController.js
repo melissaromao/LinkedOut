@@ -1,4 +1,5 @@
 const Categoria = require('../models/Categoria');
+const Empresa = require('../models/Empresa');
 
 module.exports = {
   create: async (req, res) => {
@@ -67,21 +68,21 @@ module.exports = {
     }
 },
 
-  delete: async (req, res) => {
-    const { idCategoria } = req.params;
-    const categorias = await Categoria.findAll();
+    delete: async (req, res) => {
+        const { idCategoria } = req.params;
 
-    try {
-      const categoria = await Categoria.findByPk(idCategoria);
-      if (!categoria) {
-        return res.render('categorias', { warning: 'Categoria não encontrada', categorias });
-      }
+        try {
+            await Empresa.update(
+                { idCategoria: null }, 
+                { where: { idCategoria } }
+            );
 
-      await categoria.destroy();
-      return res.render('categorias', { success: 'Categoria excluída com sucesso', categorias });
-    } catch (error) {
-      console.error(error);
-      return res.render('categorias', { error: 'Erro ao excluir categoria', categorias });
+            await Categoria.destroy({ where: { idCategoria } });
+
+            return res.render('categorias', { success: 'Categoria excluída com sucesso', categorias: await Categoria.findAll()});
+        } catch (error) {
+            console.error(error);
+            return res.render('categorias', { error: 'Erro ao excluir a categoria', categorias: await Categoria.findAll() });
+        }
     }
-  }
 };
