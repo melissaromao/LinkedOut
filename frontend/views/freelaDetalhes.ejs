@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Freela</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Detalhes do Freela</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <%= freela.nome %>
+                </h5>
+                <p class="card-text">
+                    <%= freela.descricao %>
+                </p>
+                <p><strong>Categoria:</strong>
+                    <%= freela.Categoria ? freela.Categoria.nome : 'Sem Categoria' %>
+                </p>
+                <p><strong>Remuneração:</strong> R$ <%= freela.valor %>
+                </p>
+                <p><strong>Data de Validade:</strong>
+                    <%= freela.dataValidade ? new Date(freela.dataValidade).toISOString().split('T')[0] : '' %>
+                </p>
+                <p><strong>Status:</strong>
+                    <%= freela.statusFreela %>
+                </p>
+                <p><strong>Localização Empresa:</strong>
+                    <%= empresa.latitude %>, <%= empresa.longitude %>
+                </p>
+
+                <a href="/candidatura/<%= freela.idFreela %>" class="btn btn-primary">Candidatar-se</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

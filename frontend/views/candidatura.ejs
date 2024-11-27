@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidatura</title>
+</head>
+
+<body>
+    <h1>Candidatura</h1>
+    <% if (typeof warning !=='undefined' && warning) { %>
+        <div class="alert alert-warning mt-3" role="alert">
+            <%= warning %>
+        </div>
+        <% } %>
+
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger mt-3" role="alert">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <% if (typeof success !=='undefined' && success) { %>
+                        <div class="alert alert-success mt-3" role="alert">
+                            <%= success %>
+                        </div>
+                        <% } %>
+
+                        <form action="/candidatura/<%= freela.idFreela %>" method="POST">
+                            <label for="idFreelancer">Escolha o Freelancer:</label>
+                            <select id="idFreelancer" name="idFreelancer">
+                                <% freelancers.forEach(function(freelancer) { %>
+                                    <option value="<%= freelancer.idFreelancer %>">
+                                        <%= freelancer.nome %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                            <button type="submit">Candidatar</button>
+                        </form>
+                                                                        </body>
+
+</html>
