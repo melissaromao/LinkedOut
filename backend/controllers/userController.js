@@ -28,41 +28,47 @@ module.exports = {
 
             return res.render('index', { success: 'Sucesso ao cadastrar usuário' });
         } catch (error) {
+            console.error(error);
             return res.render('cadastro', { error: 'Erro ao cadastrar usuário' });
         }
     },
 
     listar: async (req, res) => {
         const { idUsuario } = req;
+        let usuario = null;
+        let empresas = [];
+        let freelancers = [];
 
         try {
-            const usuario = await Usuario.findByPk(idUsuario);
+            usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
                 return res.render('index', { warning: 'Usuário não encontrado' });
             }
 
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
-            const freelancers = await Freelancer.findAll({ where: { idUsuario } });
+            empresas = await Empresa.findAll({ where: { idUsuario } });
+            freelancers = await Freelancer.findAll({ where: { idUsuario } });
 
             return res.render('home', { usuario, empresas, freelancers });
         } catch (error) {
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar usuário', usuario: null, empresas: [], freelancers: [] });
+            return res.render('home', { error: 'Erro ao buscar usuário', usuario, empresas, freelancers });
         }
     },
 
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { email, senha, nome } = req.body;
-        const empresas = await Empresa.findAll({ where: { idUsuario } });
+        let usuario = null;
+        let empresas = [];
+        let freelancers = [];
 
         if (!validator.isEmail(email)) {
-            return res.render('home', { warning: 'Email inválido', usuario, empresas, layout: 'layout'});
+            return res.render('empresaHome', { warning: 'Email inválido', usuario, empresas });
         }
 
         try {
-            const usuario = await Usuario.findByPk(idUsuario);
+            usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
                 return res.render('index', { warning: 'Usuário não encontrado' });
@@ -70,7 +76,7 @@ module.exports = {
 
             const usuarioExistente = await Usuario.findOne({ where: { email } });
             if (usuarioExistente && usuarioExistente.idUsuario !== idUsuario) {
-                return res.render('home', { warning: 'Email já cadastrado', usuario, empresas, layout: 'layout'});
+                return res.render('empresaHome', { warning: 'Email já cadastrado', usuario, empresas });
             }
 
             usuario.email = email || usuario.email;
@@ -82,21 +88,25 @@ module.exports = {
 
             await usuario.save();
 
-            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario, empresas, layout: 'layout'});
-    } catch(error) {
-        console.error(error);
-        return res.render('home', { error: 'Erro ao editar usuário', usuario, empresas, layout: 'layout' });
-    }
-},
+            empresas = await Empresa.findAll({ where: { idUsuario } });
+            freelancers = await Freelancer.findAll({ where: { idUsuario } });
+
+            return res.render('home', { success: 'Usuário atualizado com sucesso', usuario, empresas, freelancers });
+        } catch (error) {
+            console.error(error);
+            return res.render('home', { error: 'Erro ao editar usuário', usuario, empresas, freelancers });
+        }
+    },
 
     excluir: async (req, res) => {
         const { idUsuario } = req;
+        let usuario = null;
 
         try {
-            const usuario = await Usuario.findByPk(idUsuario);
+            usuario = await Usuario.findByPk(idUsuario);
 
             if (!usuario) {
-                return res.render('home', { warning: 'Usuário não encontrado' });
+                return res.render('home', { warning: 'Usuário não encontrado', empresas: [], freelancers: [] });
             }
 
             await usuario.destroy();
@@ -104,8 +114,8 @@ module.exports = {
             res.clearCookie('token');
             return res.render('index', { success: 'Usuário excluído com sucesso' });
         } catch (error) {
-            console.log(error);
-            return res.render('home', { error: 'Erro ao excluir usuário' });
+            console.error(error);
+            return res.render('home', { error: 'Erro ao excluir usuário', empresas: [], freelancers: [] });
         }
     }
 };
