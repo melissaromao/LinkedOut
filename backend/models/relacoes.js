@@ -16,14 +16,18 @@ Freelancer.hasMany(Pagamento, {foreignKey: 'idFreelancer'});
 
 Empresa.belongsTo(Usuario, {foreignKey: 'idUsuario'});
 Empresa.hasMany(Freela, {foreignKey: 'idEmpresa'});
+Empresa.belongsTo(Categoria, { foreignKey: 'idCategoria' });
 
 Pagamento.belongsTo(Freelancer, {foreignKey: 'idFreelancer'});
 Pagamento.belongsTo(Freela, {foreignKey: 'idFreela'});
 
-Freela.belongsTo(Empresa, {foreignKey: 'idEmpresa'});
+Freela.belongsTo(Empresa, {foreignKey: 'idEmpresa', as: 'Empresa'});
 Freela.hasMany(Candidatura, {foreignKey: 'idFreela'});
 Freela.hasMany(Pagamento, {foreignKey: 'idFreela'});
+Freela.belongsTo(Categoria, { foreignKey: 'idCategoria', as: 'Categoria'});
 
+Categoria.hasMany(Freela, { foreignKey: 'idCategoria' });
+Categoria.hasMany(Empresa, { foreignKey: 'idCategoria' });
 
 Candidatura.belongsTo(Freelancer, {foreignKey: 'idFreelancer'});
 Candidatura.belongsTo(Freela, {foreignKey: 'idFreela'});
