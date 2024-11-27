@@ -100,15 +100,13 @@ app.get('/candidatura/:idFreela', async (req, res) => {
   const idFreela = req.params.idFreela;
   
   try {
-      // Buscar a vaga (Freela)
       const freela = await Freela.findByPk(idFreela);
       if (!freela) {
           return res.status(404).send('Freela não encontrado');
       }
 
-      // Buscar todos os freelancers
       const freelancers = await Freelancer.findAll(); 
-      res.render('candidatura', { freela, freelancers }); // Passando dados para a página
+      res.render('candidatura', { freela, freelancers }); 
   } catch (error) {
       console.error(error);
       res.status(500).send('Erro ao carregar freela');
@@ -116,29 +114,25 @@ app.get('/candidatura/:idFreela', async (req, res) => {
 });
 
 app.post('/candidatura/:idFreela', async (req, res) => {
-  const { idFreelancer } = req.body; // Pegando o idFreelancer do corpo da requisição
-  const idFreela = req.params.idFreela; // Pegando o idFreela da URL
+  const { idFreelancer } = req.body; 
+  const idFreela = req.params.idFreela; 
 
   try {
-      // Verificar se a vaga (Freela) existe
       const freela = await Freela.findByPk(idFreela);
       if (!freela) {
           return res.status(404).send('Freela não encontrado');
       }
 
-      // Verificar se o freelancer selecionado existe
       const freelancer = await Freelancer.findByPk(idFreelancer);
       if (!freelancer) {
           return res.status(404).send('Freelancer não encontrado');
       }
 
-      // Criar a candidatura
       const candidatura = await Candidatura.create({
           idFreela: freela.idFreela,
           idFreelancer: freelancer.idFreelancer,
       });
 
-      // Redirecionar ou renderizar a resposta
       if (candidatura) {
         res.redirect('/home')
       } else {

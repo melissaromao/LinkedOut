@@ -7,26 +7,22 @@ const freelaController = require('./freelaController');
 module.exports = {
 
     candidatar: async (req, res) => {
-        const idFreelancer = req.body.idFreelancer;  // Pegando o idFreelancer do corpo da requisição
-        const idFreela = req.params.idFreela;  // Pegando o idFreela da URL
+        const idFreelancer = req.body.idFreelancer;  
+        const idFreela = req.params.idFreela;
     
         try {
-            // Buscar os freelancers disponíveis
-            const freelancers = await Freelancer.findAll();  // Isso pega todos os freelancers
+            const freelancers = await Freelancer.findAll();  
     
-            // Buscar a vaga (freela)
             const freela = await Freela.findByPk(idFreela);
             if (!freela) {
                 return res.render('home', { error: 'Vaga não encontrada' });
             }
     
-            // Verificar se o freelancer selecionado existe
             const freelancer = await Freelancer.findByPk(idFreelancer);
             if (!freelancer) {
                 return res.render('home', { error: 'Freelancer não encontrado' });
             }
     
-            // Criar a candidatura
             const candidatura = await Candidatura.create({
                 idFreela: freela.idFreela,
                 idFreelancer: freelancer.idFreelancer,
@@ -41,7 +37,6 @@ module.exports = {
                 include: [{ model: Freela }] 
             });
     
-            // Se a candidatura foi criada com sucesso, redireciona ou renderiza a resposta
             return res.render('freelancerHome', { success: 'Candidatura criada com sucesso!', freelancer, candidaturas });
         } catch (error) {
             console.log(error);
@@ -69,31 +64,25 @@ module.exports = {
         const { idCandidatura } = req.params;
     
         try {
-            // Encontrar a candidatura pelo ID
             const candidatura = await Candidatura.findByPk(idCandidatura);
             if (!candidatura) {
                 return res.status(404).json({ error: 'Candidatura não encontrada' });
             }
     
-            // Obter o ID do freelancer da candidatura
             const { idFreelancer } = candidatura;
     
-            // Deletar a candidatura
             await candidatura.destroy();
     
-            // Buscar o freelancer
             const freelancer = await Freelancer.findByPk(idFreelancer);
             if (!freelancer) {
                 return res.render('home', { error: 'Freelancer não encontrado' });
             }
     
-            // Buscar todas as candidaturas restantes para o freelancer
             const candidaturas = await Candidatura.findAll({
                 where: { idFreelancer },
                 include: [{ model: Freela }],
             });
     
-            // Renderizar a página com as informações atualizadas
             return res.render('freelancerHome', {
                 success: 'Candidatura cancelada com sucesso',
                 freelancer,
