@@ -5,39 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidatura</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Candidatura</h1>
-    <% if (typeof warning !=='undefined' && warning) { %>
-        <div class="alert alert-warning mt-3" role="alert">
-            <%= warning %>
-        </div>
-        <% } %>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <img src="/assets/img/LogoLinkedOut.jpeg" class="img-fluid" alt="Logo Linked Out">
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="form-freela p-4 rounded">
+                    <% if (typeof warning !== 'undefined' && warning) { %>
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <%= warning %>
+                        </div>
+                    <% } %>
 
-            <% if (typeof error !=='undefined' && error) { %>
-                <div class="alert alert-danger mt-3" role="alert">
-                    <%= error %>
-                </div>
-                <% } %>
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
 
-                    <% if (typeof success !=='undefined' && success) { %>
+                    <% if (typeof success !== 'undefined' && success) { %>
                         <div class="alert alert-success mt-3" role="alert">
                             <%= success %>
                         </div>
-                        <% } %>
+                    <% } %>
 
-                        <form action="/candidatura/<%= freela.idFreela %>" method="POST">
-                            <label for="idFreelancer">Escolha o Freelancer:</label>
-                            <select id="idFreelancer" name="idFreelancer">
+                    <form action="/candidatura/<%= freela.idFreela %>" method="POST">
+                        <h2 class="text-dark text-center mb-4">Candidatura</h2>
+                        <div class="mb-3">
+                            <label for="idFreelancer" class="form-label">Escolha o Freelancer:</label>
+                            <select id="idFreelancer" name="idFreelancer" class="form-control">
                                 <% freelancers.forEach(function(freelancer) { %>
                                     <option value="<%= freelancer.idFreelancer %>">
                                         <%= freelancer.nome %>
                                     </option>
                                 <% }); %>
                             </select>
-                            <button type="submit">Candidatar</button>
-                        </form>
-                                                                        </body>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success w-100">Candidatar</button>
+                        </div>
+                    </form>
+                    <a href="/home" class="btn btn-secondary w-100">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </html>
