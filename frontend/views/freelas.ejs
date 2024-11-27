@@ -47,10 +47,6 @@
                                         <%= freela.nome ? freela.nome : 'Sem Título' %>
                                     </h5>
                                     <p class="mb-1">
-                                        <strong>Descrição:</strong>
-                                        <%= freela.descricao ? freela.descricao : 'Sem Descrição' %>
-                                    </p>
-                                    <p class="mb1">
                                         <strong>Categoria:</strong>
                                         <%= freela.Categoria ? freela.Categoria.nome : 'Sem Categoria' %>
                                     </p>
@@ -62,14 +58,9 @@
                                         <strong>Status:</strong>
                                         <%= freela.statusFreela ? freela.statusFreela : 'Sem Status' %>
                                     </p>
-                                    <p class="mb-1">
-                                        <strong>Data de Criação:</strong>
-                                        <%= freela.dataCriacao ? freela.dataCriacao.toISOString().split('T')[0] : '' %>
-                                    </p>
-                                    <p class="mb-1">
-                                        <strong>Data de Validade:</strong>
-                                        <%= freela.dataValidade ? freela.dataValidade.toISOString().split('T')[0] : '' %>
-                                    </p>
+                                    <a href="/api/freela/<%= freela.idFreela %>" class="btn btn-primary">
+                                        Ver Detalhes
+                                    </a>        
                                 </div><br>
                             <% }); %>
                         </div>
