@@ -76,16 +76,15 @@
                             <ul class="list-group">
                                 <% empresas.forEach(empresa=> { %>
                                     <li>
-                                        <a href="/empresa/<%= empresa.idEmpresa %>">
-                                            <%= empresa.nome %>
-                                        </a>
+                                        <a class="text-decoration-none" href="/empresa/<%= empresa.idEmpresa %>">
+                                            <%= empresa.nome %> 
+                                        </a> 
                                     </li>
-                                    <% }) %>
+                                    <% }) %><br>
                             </ul>
                             <% } else { %>
-                                <span class="small">Você ainda não tem empresas. <a href="/empresa"
-                                        class="text-decoration-none">Criar Empresa</a></span>
-                                <% } %>
+                                <span class="small">Você ainda não tem empresas.</span>
+                                <% } %><a href="/empresa" class="btn btn-primary mb-3">Criar Empresa</a>
 
                                     <br>
                                     <h3 class="mt-4">Freelancers</h3>
@@ -94,17 +93,18 @@
                                         <ul class="list-group">
                                             <% freelancers.forEach(freelancer=> { %>
                                                 <li>
-                                                    <a href="/freelancer/<%= freelancer.idFreelancer %>">
+                                                    <a class="text-decoration-none" href="/freelancer/<%= freelancer.idFreelancer %>">
                                                         <%= freelancer.nome %>
                                                     </a>
                                                 </li>
-                                                <% }) %>
+                                                <% }) %><br>
                                         </ul>
                                         <% } else { %>
                                             <span class="small">Você ainda não tem freelancers.</span>
-                                            <% } %> <a href="/freelancer" class="text-decoration-none">Criar
-                                                    Freelancer</a> <br>
-                                                <a href="/categoria" class="text-decoration-none">Criar Categoria</a>
+                                            <% } %> <a href="/freelancer" class="btn btn-primary">Criar
+                                                    Freelancer</a>
+                                                <br><br>
+                                                <a href="/categoria" class="btn btn-primary">Criar Categoria</a>
                                                 <br>
                                                 <button type="button" class="btn btn-secondary mt-3">
                                                     <a class="text-light text-decoration-none"
