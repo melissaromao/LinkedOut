@@ -42,9 +42,29 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="descricao" class="form-label">Descrição</label>
-                                                    <textarea class="form-control" id="descricao" name="descricao" rows="3" style="resize: none;"
-                                                        required></textarea>
+                                                    <textarea class="form-control" id="descricao" name="descricao"
+                                                        rows="3" style="resize: none;" required></textarea>
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label for="idCategoria" class="form-label">Categoria</label>
+                                                    <select class="form-control" id="idCategoria" name="idCategoria"
+                                                        required>
+                                                        <option value="" disabled selected>Selecione uma categoria
+                                                        </option>
+                                                        <% if (typeof categorias !=='undefined' && categorias.length> 0)
+                                                            { %>
+                                                            <% categorias.forEach(categoria=> { %>
+                                                                <option value="<%= categoria.idCategoria %>">
+                                                                    <%= categoria.nome %>
+                                                                </option>
+                                                                <% }); %>
+                                                                    <% } else { %>
+                                                                        <option value="" disabled>Nenhuma categoria
+                                                                            disponível</option>
+                                                                        <% } %>
+                                                    </select>
+                                                </div>
+
                                                 <div class="mb-3">
                                                     <label for="valor" class="form-label">Valor</label>
                                                     <input type="number" class="form-control" id="valor" name="valor"
@@ -57,9 +77,10 @@
                                                         name="dataValidade" required>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-success w-100">Cadastrar Freela</button>
-                                            </form>
-
+                                                <button type="submit" class="btn btn-success w-100">Cadastrar
+                                                    Freela</button>
+                                            </form><br>
+                                            <a href="/home" class="btn btn-secondary w-100">Voltar</a>
                 </div>
             </div>
         </div>
