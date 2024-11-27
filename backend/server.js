@@ -7,7 +7,6 @@ const sequelize = require('./config/database');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const ejsLayouts = require('express-ejs-layouts');
 const app = express();
 const port = 8080;
 
@@ -15,7 +14,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -24,7 +23,7 @@ const userRoute = require('./routes/userRoute');
 const empresaRoute = require('./routes/empresaRoute');
 const freelancerRoute = require('./routes/freelancerRoute');
 const categoriaRoute = require('./routes/categoriaRoute');
-const freelaRoute  = require('./routes/freelaRoute')
+const freelaRoute = require('./routes/freelaRoute')
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
 const freelancerController = require('./controllers/freelancerController');
@@ -44,8 +43,6 @@ app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 
 app.use(express.static(path.join(__dirname, '../frontend')));
-app.use(ejsLayouts);
-app.set('layout', 'layout');
 
 app.get('/', (req, res) => {
   res.render('index', { layout: false });
@@ -59,11 +56,11 @@ app.get('/home', authMiddleware, userController.listar);
 
 app.get('/empresa', async (req, res) => {
   try {
-      const categorias = await Categoria.findAll(); 
-      res.render('empresa', { categorias });
+    const categorias = await Categoria.findAll();
+    res.render('empresa', { categorias });
   } catch (error) {
-      console.error(error);
-      res.render('empresa', { error: 'Erro ao carregar categorias' });
+    console.error(error);
+    res.render('empresa', { error: 'Erro ao carregar categorias' });
   }
 });
 
@@ -83,9 +80,15 @@ app.get('/categorias', categoriaController.findAll);
 
 app.get('/freelaEditar/:idFreela', authMiddleware, freelaController.listar);
 
-app.get('/empresa/:idEmpresa/freela', (req, res) => { 
-  const idEmpresa = req.params.idEmpresa;
-  res.render('freela', { idEmpresa: idEmpresa, layout: false });
+app.get('/empresa/:idEmpresa/freela', async (req, res) => {
+  try {
+    const categorias = await Categoria.findAll();
+    const idEmpresa = req.params.idEmpresa; 
+    res.render('freela', { idEmpresa: idEmpresa, categorias: categorias });
+  } catch (error) {
+    console.log(error); 
+    res.render('empresa', { error: 'Erro ao carregar categorias' });
+  }
 });
 
 app.get('/freelas', authMiddleware, freelaController.listarFreelas);
@@ -93,7 +96,7 @@ app.get('/freelas', authMiddleware, freelaController.listarFreelas);
 sequelize.authenticate()
   .then(() => {
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
-    return sequelize.sync({force: false});
+    return sequelize.sync({ force: false });
   })
   .then(() => {
     console.log('SUCESSO!\nTABELAS SINCRONIZADAS')
