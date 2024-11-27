@@ -47,37 +47,41 @@ module.exports = {
     listar: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa } = req.params;
-        console.log('ID DA EMPRESA', idEmpresa);
     
         try {
             const usuario = await Usuario.findOne({ where: { idUsuario } });
             const empresa = await Empresa.findOne({ where: { idEmpresa, idUsuario } });
-
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
-            const freelancers = await Freelancer.findAll({ where: { idUsuario } });
-            const categoria = await Categoria.findByPk(empresa.idCategoria);
-
+    
             if (!empresa) {
-                return res.render('home', { warning: 'Empresa não encontrada', usuario, empresas, freelancers });
+                return res.render('home', { warning: 'Empresa não encontrada', usuario });
             }
     
-            const freelas = await Freela.findAll({ where: { idEmpresa } });
-            const categorias = await Categoria.findAll();
-
-            if (!categoria) {
-                return res.render('home', { warning: 'Categoria não encontrada' });
-            }
-            return res.render('empresaHome', { success: 'Empresa encontrada', empresa, usuario, categoria, categorias, freelas: freelas || [] });
-
+            const categoria = await Categoria.findByPk(empresa.idCategoria);
+            
+            const freelas = await Freela.findAll({
+                where: { idEmpresa },
+                include: [{
+                    model: Categoria,
+                    as: 'Categoria'
+                }]
+            });
+            
+            const categorias = await Categoria.findAll(); 
+    
+            return res.render('empresaHome', {
+                success: 'Empresa encontrada',
+                empresa,
+                usuario,
+                categoria: categoria || null,
+                categorias,
+                freelas: freelas || []
+            });
         } catch (error) {
-            const usuario = await Usuario.findOne({ where: { idUsuario } });
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
-    
             console.error(error);
-            return res.render('home', { error: 'Erro ao buscar empresa', usuario, empresas });
+            return res.render('home', { error: 'Erro ao buscar empresa', usuario });
         }
-    },
-
+    },    
+    
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa, cnpj, nome, sobreNos, idCategoria, latitude, longitude } = req.body;
