@@ -1,6 +1,8 @@
 const Usuario = require('../models/Usuario');
 const Freelancer = require('../models/Freelancer');
 const Empresa = require('../models/Empresa');
+const Candidatura = require('../models/Candidatura');
+const Freela = require('../models/Freela');
 
 module.exports = {
     cadastrar: async (req, res) => {
@@ -43,24 +45,42 @@ module.exports = {
     listar: async (req, res) => {
         const { idUsuario } = req;
         const { idFreelancer } = req.params;
+    
+        let usuario, empresas;
 
         try {
-            const usuario = await Usuario.findOne({ where: { idUsuario } });
-            const freelancer = await Freelancer.findOne({ where: { idFreelancer, idUsuario } });
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
-
+            usuario = await Usuario.findOne({ where: { idUsuario } });
+            const freelancer = await Freelancer.findOne({ 
+                where: { idFreelancer, idUsuario }
+            });
+            empresas = await Empresa.findAll({ where: { idUsuario } });
+    
             if (!freelancer) {
                 return res.render('home', { warning: 'Freelancer não encontrado', usuario, empresas });
             }
-
-            return res.render('freelancerHome', { success: 'Freelancer encontrado', freelancer, usuario });
+    
+            const candidaturas = await Candidatura.findAll({
+                where: { idFreelancer },
+                include: [
+                    {
+                        model: Freela,
+                        attributes: ['idFreela', 'nome']
+                    }
+                ]
+            });
+    
+            return res.render('freelancerHome', { 
+                success: 'Freelancer encontrado', 
+                freelancer, 
+                usuario, 
+                candidaturas 
+            });
         } catch (error) {
             console.error(error);
-            const empresas = await Empresa.findAll({ where: { idUsuario } });
             return res.render('home', { error: 'Erro ao buscar freelancer', usuario, empresas });
         }
     },
-
+        
     editar: async (req, res) => {
         const { idUsuario } = req;
         const { idFreelancer, cpf, nome, tituloProfissional, sobreMim, dataNasc, foto, latitude, longitude } = req.body;

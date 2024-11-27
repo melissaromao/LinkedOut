@@ -24,13 +24,18 @@ const empresaRoute = require('./routes/empresaRoute');
 const freelancerRoute = require('./routes/freelancerRoute');
 const categoriaRoute = require('./routes/categoriaRoute');
 const freelaRoute = require('./routes/freelaRoute')
+const candidaturaRoute = require('./routes/candidaturaRoute');
 const authMiddleware = require('./middlewares/authMiddleware');
 const empresaController = require('./controllers/empresaController');
 const freelancerController = require('./controllers/freelancerController');
 const userController = require('./controllers/userController');
 const categoriaController = require('./controllers/categoriaController');
 const freelaController = require('./controllers/freelaController');
+const candidaturaController = require('./controllers/candidaturaController');
 const Categoria = require('./models/Categoria');
+const Freela = require('./models/Freela'); 
+const Freelancer = require('./models/Freelancer'); 
+const Candidatura = require('./models/Candidatura');
 
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRoute);
@@ -38,9 +43,7 @@ app.use('/api/empresa', empresaRoute);
 app.use('/api/freelancer', freelancerRoute);
 app.use('/api/categoria', categoriaRoute);
 app.use('/api/freela', freelaRoute);
-app.use('/api/empresa', empresaRoute);
-app.use('/api/auth', authRoute);
-app.use('/api/user', userRoute);
+app.use('/api/candidatura', candidaturaRoute);
 
 app.use(express.static(path.join(__dirname, '../frontend')));
 
@@ -92,6 +95,60 @@ app.get('/empresa/:idEmpresa/freela', async (req, res) => {
 });
 
 app.get('/freelas', authMiddleware, freelaController.listarFreelas);
+
+app.get('/candidatura/:idFreela', async (req, res) => {
+  const idFreela = req.params.idFreela;
+  
+  try {
+      // Buscar a vaga (Freela)
+      const freela = await Freela.findByPk(idFreela);
+      if (!freela) {
+          return res.status(404).send('Freela não encontrado');
+      }
+
+      // Buscar todos os freelancers
+      const freelancers = await Freelancer.findAll(); 
+      res.render('candidatura', { freela, freelancers }); // Passando dados para a página
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Erro ao carregar freela');
+  }
+});
+
+app.post('/candidatura/:idFreela', async (req, res) => {
+  const { idFreelancer } = req.body; // Pegando o idFreelancer do corpo da requisição
+  const idFreela = req.params.idFreela; // Pegando o idFreela da URL
+
+  try {
+      // Verificar se a vaga (Freela) existe
+      const freela = await Freela.findByPk(idFreela);
+      if (!freela) {
+          return res.status(404).send('Freela não encontrado');
+      }
+
+      // Verificar se o freelancer selecionado existe
+      const freelancer = await Freelancer.findByPk(idFreelancer);
+      if (!freelancer) {
+          return res.status(404).send('Freelancer não encontrado');
+      }
+
+      // Criar a candidatura
+      const candidatura = await Candidatura.create({
+          idFreela: freela.idFreela,
+          idFreelancer: freelancer.idFreelancer,
+      });
+
+      // Redirecionar ou renderizar a resposta
+      if (candidatura) {
+        res.redirect('/home')
+      } else {
+          res.status(500).send('Erro ao criar candidatura');
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Erro ao processar candidatura');
+  }
+});
 
 sequelize.authenticate()
   .then(() => {

@@ -69,30 +69,53 @@ module.exports = {
     },
 
     listar: async (req, res) => {
-        const { idUsuario } = req;
-        const { idFreela } = req.params;
-
+        const idUsuario = req.idUsuario; 
+    
+        const idFreelancer = req.body.idFreelancer;  
+        const idFreela = req.params.idFreela;  
+        
         try {
-            const freela = await Freela.findByPk(idFreela);
+            const usuario = await Usuario.findByPk(idUsuario);
+            if (!usuario) {
+                return res.render('empresa', { warning: 'Usuário não encontrado' });
+            }
+    
+            if (!idFreela) {
+                return res.status(400).send('ID do freela inválido');
+            }
+        
+            const freela = await Freela.findByPk(idFreela, {
+                include: [
+                    {
+                        model: Categoria,
+                        as: 'Categoria',
+                        attributes: ['nome'],
+                    },
+                ],
+            });
+        
             if (!freela) {
                 return res.render('home', { warning: 'Freela não encontrado' });
             }
-
-            const empresa = await Empresa.findOne({ where: { idEmpresa: freela.idEmpresa, idUsuario } });
+        
+            const empresa = await Empresa.findByPk(freela.idEmpresa);
             if (!empresa) {
-                return res.render('home', { warning: 'Você não tem permissão para editar este freela' });
+                return res.render('home', { warning: 'Empresa não encontrada' });
             }
-
-            const categoria = await Categoria.findByPk(freela.idCategoria);
-            const categorias = await Categoria.findAll();
-
-            return res.render('freelaEditar', { freela, empresa, categoria, categorias });
+        
+            return res.render('freelaDetalhes', {
+                freela,
+                empresa,
+                categoria: freela.Categoria,
+                usuario, 
+                idFreelancer,
+            });
         } catch (error) {
             console.log(error);
-            return res.render('home', { error: 'Erro ao carregar dados para edição' });
+            return res.render('home', { error: 'Erro ao carregar detalhes do freela.' });
         }
     },
-
+            
     listarFreelas: async (req, res) => {
         try {
             const limit = 10;
