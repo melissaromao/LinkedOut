@@ -98,8 +98,9 @@ module.exports = {
             const limit = 10;
             const page = parseInt(req.query.page) || 1;
             const offset = (page - 1) * limit;
-
-            const freelas = await Freela.findAll({
+            const idCategoria = req.query.idCategoria;
+    
+            const queryOptions = {
                 include: [
                     {
                         model: Empresa,
@@ -114,27 +115,36 @@ module.exports = {
                 ],
                 limit: limit,
                 offset: offset
-            });
-
-            const totalFreelas = await Freela.count();
-            const totalPages = Math.ceil(totalFreelas / limit);
-
-            if (!freelas || freelas.length === 0) {
-                return res.render('freelas', { warning: 'Nenhum freela encontrado', freelas: [] });
+            };
+    
+            if (idCategoria) {
+                queryOptions.where = { idCategoria: idCategoria };
             }
-
+    
+            const freelas = await Freela.findAll(queryOptions);
+    
+            const totalFreelas = await Freela.count({
+                where: idCategoria ? { idCategoria: idCategoria } : {}
+            });
+    
+            const totalPages = Math.ceil(totalFreelas / limit);
+    
+            const categorias = await Categoria.findAll();
+    
             return res.render('freelas', {
                 freelas: freelas || [],
                 currentPage: page,
                 totalPages: totalPages,
                 totalFreelas: totalFreelas,
+                categorias: categorias,
+                idCategoria: idCategoria 
             });
         } catch (error) {
             console.log(error);
             return res.render('home', { error: 'Erro ao listar freelas' });
         }
     },
-
+        
     listarFreela: async (req, res) => {
         const { idUsuario } = req;
         const { idEmpresa } = req.params;
