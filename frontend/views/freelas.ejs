@@ -19,15 +19,17 @@
             </form>
 
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filtro
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="VagasNegociaçãoFreelancers.html">Vagas em Negociação</a></li>
-                    <li><a class="dropdown-item" href="VagasAndamentoFreelancers.html">Vagas em Andamento</a></li>
-                    <li><a class="dropdown-item" href="VagasReceberFreelancers.html">Vagas a Receber</a></li>
-                    <li><a class="dropdown-item" href="VagasFinalizadas.html">Vagas Finalizadas</a></li>
+                    <% categorias.forEach(function(categoria) { %>
+                        <li>
+                            <a class="dropdown-item" href="?page=1&idCategoria=<%= categoria.idCategoria %>">
+                                <%= categoria.nome %>
+                            </a>
+                        </li>
+                    <% }); %>
                 </ul>
             </div>
         </div>
@@ -37,12 +39,12 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
                 <div class="list-group-vagas">
-                    <% if (freelas && freelas.length> 0) { %>
+                    <% if (freelas && freelas.length > 0) { %>
                         <div class="list-group">
                             <% freelas.forEach(function(freela) { %>
                                 <div class="list-group-item border-vagas">
                                     <h5 class="mb-1">
-                                        <%= freela.titulo ? freela.titulo : 'Sem Título' %>
+                                        <%= freela.nome ? freela.nome : 'Sem Título' %>
                                     </h5>
                                     <p class="mb-1">
                                         <strong>Descrição:</strong>
@@ -66,24 +68,22 @@
                                     </p>
                                     <p class="mb-1">
                                         <strong>Data de Validade:</strong>
-                                        <%= freela.dataValidade ? freela.dataValidade.toISOString().split('T')[0] : ''
-                                            %>
+                                        <%= freela.dataValidade ? freela.dataValidade.toISOString().split('T')[0] : '' %>
                                     </p>
                                 </div><br>
-                                <% }); %>
+                            <% }); %>
                         </div>
                         <div class="pagination">
-                            <% if (currentPage> 1) { %>
-                                <a href="?page=<%= currentPage - 1 %>" class="btn btn-primary">Página Anterior</a>
-                                <% } %>
-                                    <% if (currentPage < totalPages) { %>
-                                        <a href="?page=<%= currentPage + 1 %>" class="btn btn-primary">Próxima
-                                            Página</a>
-                                        <% } %>
-                        </div>
-                        <% } else { %>
-                            <p class="text-center">Nenhum freela disponível no momento.</p>
+                            <% if (currentPage > 1) { %>
+                                <a href="?page=<%= currentPage - 1 %>&idCategoria=<%= idCategoria || '' %>" class="btn btn-primary">Página Anterior</a>
                             <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <a href="?page=<%= currentPage + 1 %>&idCategoria=<%= idCategoria || '' %>" class="btn btn-primary">Próxima Página</a>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p class="text-center">Nenhum freela disponível no momento.</p>
+                    <% } %>
                 </div>
             </div>
         </div>
