@@ -43,19 +43,22 @@
             </div>
 
             <div class="input-group mb-3">
-                <textarea class="form-control" type="date" name="dataNasc" placeholder="data de Nascimento"><%= freelancer.dataNasc %></textarea>
+                <input 
+                    type="date" 
+                    class="form-control" 
+                    name="dataNasc" 
+                    value="<%= freelancer.dataNasc ? freelancer.dataNasc.toISOString().split('T')[0] : '' %>" 
+                    placeholder="Data de Nascimento">
+            </div>
+            
+            <div class="input-group mb-3">
+                <input type="number" step="0.000001" class="form-control" name="latitude"
+                    value="<%= freelancer.latitude %>" placeholder="Latitude">
             </div>
 
             <div class="input-group mb-3">
-                <textarea class="form-control" name="foto" placeholder="foto"><%= freelancer.foto %></textarea>
-            </div>
-
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="latitude" value="<%= freelancer.latitude %>" placeholder="Latitude">
-            </div>
-
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="longitude" value="<%= freelancer.longitude %>" placeholder="Longitude">
+                <input type="number" step="0.000001" class="form-control" name="longitude"
+                    value="<%= freelancer.longitude %>" placeholder="Longitude">
             </div>
 
             <button type="submit" class="btn btn-success">Salvar Alterações</button>
