@@ -34,57 +34,64 @@
                                         </div>
                                         <% } %>
 
-                                        <% if (typeof usuario !== 'undefined' && usuario) { %>
-                                            <p>Cadastre Freelancer, <%= usuario.nome %>!</p>
-                                        <% } %>                                        
-                                            <form method="POST" action="/api/freelancer/cadastrar">
-                                                <div class="mb-3">
-                                                    <label for="nome" class="form-label">Nome</label>
-                                                    <input type="text" class="form-control" id="nome" name="nome"
-                                                        placeholder="Seu Nome" required>
-                                                </div>
+                                            <% if (typeof usuario !=='undefined' && usuario) { %>
+                                                <p>Cadastre Freelancer, <%= usuario.nome %>!</p>
+                                                <% } %>
+                                                    <form method="POST" action="/api/freelancer/cadastrar">
+                                                        <h2 class="text-dark text-center mb-4">Cadastro de Freelancer
+                                                        </h2>
+                                                        <div class="mb-3">
+                                                            <label for="nome" class="form-label">Nome</label>
+                                                            <input type="text" class="form-control" id="nome"
+                                                                name="nome" placeholder="Seu Nome" required>
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="cpf" class="form-label">CPF</label>
-                                                    <input type="text" class="form-control" id="cpf" name="cpf"
-                                                        placeholder="123.456.789-10" required>
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="cpf" class="form-label">CPF</label>
+                                                            <input type="text" class="form-control" id="cpf" name="cpf"
+                                                                placeholder="123.456.789-10" required>
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="tituloProfissional" class="form-label">Titulo Profissional</label>
-                                                    <input type="text" class="form-control" id="tituloProfissional" name="tituloProfissional"
-                                                        placeholder="Título Profissional" required>
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="tituloProfissional" class="form-label">Titulo
+                                                                Profissional</label>
+                                                            <input type="text" class="form-control"
+                                                                id="tituloProfissional" name="tituloProfissional"
+                                                                placeholder="Título Profissional" required>
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="sobreMim" class="form-label">Sobre Mim</label>
-                                                    <textarea class="form-control" id="sobreMim" name="sobreMim"
-                                                        rows="3" style="resize: none;" required></textarea>
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="sobreMim" class="form-label">Sobre Mim</label>
+                                                            <textarea class="form-control" id="sobreMim" name="sobreMim"
+                                                                rows="3" style="resize: none;" required></textarea>
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="dataNasc" class="form-label">Data de nascimento</label>
-                                                    <input type="date" class="form-control" id="dataNasc" name="dataNasc"
-                                                        placeholder="dataNasc" required>
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="dataNasc" class="form-label">Data de
+                                                                nascimento</label>
+                                                            <input type="date" class="form-control" id="dataNasc"
+                                                                name="dataNasc" placeholder="dataNasc" required>
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="latitude" class="form-label">Latitude</label>
-                                                    <input type="number" step="0.000001" class="form-control"
-                                                        id="latitude" name="latitude">
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="latitude" class="form-label">Latitude</label>
+                                                            <input type="number" step="0.000001" class="form-control"
+                                                                id="latitude" name="latitude">
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="longitude" class="form-label">Longitude</label>
-                                                    <input type="number" step="0.000001" class="form-control"
-                                                        id="longitude" name="longitude">
-                                                </div>
+                                                        <div class="mb-3">
+                                                            <label for="longitude" class="form-label">Longitude</label>
+                                                            <input type="number" step="0.000001" class="form-control"
+                                                                id="longitude" name="longitude">
+                                                        </div>
 
-                                                <div class="mb-3">
-                                                    <input class="btn btn-success w-100" type="submit" value="Cadastrar"
-                                                        id="cadastrar">
-                                                </div>
-                                            </form>
+                                                        <div class="mb-3">
+                                                            <input class="btn btn-success w-100" type="submit"
+                                                                value="Cadastrar" id="cadastrar">
+                                                        </div>
+                                                    </form>
+                                                    <a href="/home" class="btn btn-secondary w-100">Voltar</a>
+
                 </div>
             </div>
         </div>
